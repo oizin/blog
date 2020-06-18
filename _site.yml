@@ -1,7 +1,7 @@
 name: "blog"
-title: "blog"
+title: "Data and Decisions"
 description: |
-  blog
+  Oisin Fitzgerald's blog
 output_dir: "docs"
 navbar:
   right:
