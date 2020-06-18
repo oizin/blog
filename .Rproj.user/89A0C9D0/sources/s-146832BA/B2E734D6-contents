@@ -5,9 +5,7 @@ description: |
   reading what we have to say!
 author:
   - name: Nora Jones 
-    url: https://example.com/norajones
     affiliation: Spacely Sprockets
-    affiliation_url: https://example.com/spacelysprokets
 date: 06-18-2020
 output:
   distill::distill_article:
