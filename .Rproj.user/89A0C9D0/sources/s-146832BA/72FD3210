@@ -5,13 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "2269062682",
+    "hash" : "0",
     "id" : "72FD3210",
-    "lastKnownWriteTime" : 1592456250,
-    "last_content_update" : 1592456250,
+    "lastKnownWriteTime" : 1592457204,
+    "last_content_update" : 1592457204586,
     "path" : "C:/Users/z5110862/OneDrive - UNSW/code/blog/index.Rmd",
     "project_path" : "index.Rmd",
     "properties" : {
+        "cursorPosition" : "6,10",
+        "scrollLine" : "0"
     },
     "read_only" : false,
     "read_only_alternatives" : [

@@ -2,7 +2,7 @@ name: "blog"
 title: "blog"
 description: |
   blog
-base_url: https://oizin.github.io/blog/
+base_url: https://oizin.github.io/blog
 output_dir: "docs"
 navbar:
   right:
