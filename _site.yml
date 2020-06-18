@@ -3,7 +3,6 @@ title: "blog"
 description: |
   blog
 output_dir: "docs"
-base_url: https://oizin.github.io/blog/
 navbar:
   right:
     - text: "Home"
