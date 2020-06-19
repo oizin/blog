@@ -9,6 +9,7 @@ output:
   distill::distill_article:
     self_contained: false
 bibliography: biblio.bib
+draft: true
 ---
 
 ```{r setup, include=FALSE}
@@ -39,13 +40,13 @@ $$E(Y|A=1) - E(Y|A=0) \ne E(Y(1) - Y(0))$$
 
 In our example, only by accounting for $X_1$ can we get an unconfounded case where conditional exhangeability holds and the previous inequality becomes an equality. In practise, we will need to make certain assumptions around the data generating process (often reasonable but usually unverifiable) in order to be able to calculate an unbiased treatment difference. 
 
-```{r,fig.cap="Illustration of confounding. More sever are more likely to get treated."}
-knitr::include_graphics("confounding.png")
+```{r,fig.cap="Illustration of confounding`. The more severely ill (high X1) are more likely to get treated leading to the situation where the average outcome is worse in the treated."}
+knitr::include_graphics("confounding_v2.png")
 ```
 
 ## G-methods Family
 
-Not all statistical approaches that work for treatment comparison at a single timepoint generalise to situations involving time-varying treatments^[where there is treatment confounder feedback]. The G (generalised) methods, developed by James Robins and colleagues - including structural nested mean models (SNMM) (REF), marginal structural models (REF) and G-computation (REF), apply in both single and multi-stage treatment effect estimation. If we want to compare the effectiveness of two treatment regimes or policies (e.g. [intensive versus standard blood pressure control](https://pubmed.ncbi.nlm.nih.gov/30688979/)[@williamson2019effect]) using an observational sources such as electronic medical records understanding the ideas underpinning the G-methods is worthwhile.
+Not all statistical approaches that work for treatment comparison at a single timepoint generalise to situations involving time-varying treatments^[where there is treatment confounder feedback]. The G (generalised) methods, developed by James Robins and colleagues - including structural nested mean models (SNMM) [@robins1992g], marginal structural models [@robins2000marginal] and G-computation [@robins1986new], apply in both single and multi-stage treatment effect estimation. If we want to compare the effectiveness of two treatment regimes or policies (e.g. intensive versus standard blood pressure control [@williamson2019effect]) using an observational sources such as electronic medical records understanding the ideas underpinning the G-methods is worthwhile.
 
 # Structural Nested Mean Models
 
@@ -159,11 +160,11 @@ $$
 
 As mentioned, in observational studies where the treatment assignment mechanism is unknown we replace $E(A|L)$ (the propensity score) with it's estimate, using e.g. logistic regression or more complex models.
 
-Let's simulating this situation for a model of the form $E(Y(a)|H=h,A=a) = -1.4 + 0.8h_1 + \tau_0a$ where the data is confounded - $P() = $. We'll compare fitting a SNMM for the parameter $\tau_0$ with fitting an linear model for the full conditional expectation. The simulation set up is adapted from Chakraborty and Moodie (2013) [@chakraborty2013statistical]. As shown in figure X both methods return similar results. This is to be expected; the advantage of g-estimation is primarily in situations where the prognostic component $m_0(x)$ is complex and we want a parsimonious model (we show this case below), and in time-varying treatment setting (in part 2).
+Let's simulating this situation for a model of the form $E(Y(a)|H=h,A=a) = -1.4 + 0.8h_1 + \tau_0a$ where the data is confounded. We'll compare fitting a SNMM for the parameter $\tau_0$ with fitting an linear model for the full conditional expectation. The simulation set up is adapted from Chakraborty and Moodie (2013) [@chakraborty2013statistical]. As shown in figure X both methods return similar results. This is to be expected; the advantage of g-estimation is primarily in situations where the prognostic component $m_0(x)$ is complex and we want a parsimonious model (we show this case below), and in time-varying treatment setting (in part 2).
 
-```{r,fig.cap="A comparison of OLS and gestimation for the case pf..."}
-# simulate M
-M <- 500
+```{r echo=TRUE}
+## SIMULATION 1
+M <- 500 # number of rins
 tauM <- replicate(M, {
   N <- 100
   # generate data
@@ -171,7 +172,7 @@ tauM <- replicate(M, {
   ps <- function(x) 1/(1 + exp(2 - 1.8*x))
   a <- 1*(ps(x) < runif(N))
   y <- -1.4 + 0.8*x + 2.5*a + rnorm(N)
-  # probability of treatment
+  # estimate probability of treatment
   pm <- glm(a ~ x,family = binomial())
   ph <- fitted(pm)
   w <- (a-ph)
@@ -180,17 +181,20 @@ tauM <- replicate(M, {
   tauh_lm <- lm(y ~ x + a)$coef["a"]
   c(tauh_g,tauh_lm)
 })
+```
 
+```{r,fig.cap="A comparison of OLS estimation of the outcome model E(Y|A,H) and G-estimation of the SNMM"}
 # plot results
 library(ggplot2)
 tau_df <- data.frame(t(tauM))
-names(tau_df) <- c("g-estimation","OLS")
+names(tau_df) <- c("SNMM","Outcome model")
 tau_df <- tidyr::pivot_longer(tau_df,1:2,names_to = "method",values_to = "estimate")
 ggplot(tau_df) +
   geom_histogram(aes(x = estimate),col="white",fill="skyblue") +
   geom_vline(xintercept = 2.5,col="red",linetype=2) +
   theme_bw() +
-  facet_wrap(~method,ncol=1)
+  facet_wrap(~method,ncol=1) +
+  labs(x = "Model estimate")
 ```
 
 ## Example 2
@@ -222,7 +226,7 @@ $$
 \end{align}
 $$
 
-Simulating this situation, again building the settings off Chakraborty and Moodie (2013) [@chakraborty2013statistical], we have two settings, the $m_0$ component is linear and non-linear. The treatment effect component $\tau(h)$ is always linear - we'll come to non-linar tau next. We compare G-estimation of the SNMM with a linear model for the full expectation $E(Y|H,A)$. While this shows the strength of SNMM is not entirely fair as in an empirical setting a simple plot of the data would reveal that a linear model is a bad idea.
+Simulating this situation, again building the settings off Chakraborty and Moodie (2013) [@chakraborty2013statistical], we have two settings, the $m_0$ component is linear and non-linear. The treatment effect component $\tau(h)$ is always linear - we'll come to non-linar tau next. We compare G-estimation of the SNMM with a (linear) outcome model for the full expectation $E(Y|H,A)$. While this shows the strength of SNMM is not entirely fair as in an empirical setting a simple plot of the data would reveal that a linear model is a bad idea.
 
 ```{r echo=TRUE}
 gest_snmm <- function(X,y,a,ph) {
@@ -235,9 +239,11 @@ gest_snmm <- function(X,y,a,ph) {
 }
 ```
 
-```{r,fig.cap="Figure Xb"}
-M <- 500
+```{r echo=TRUE}
+## SIMULATION 2
+M <- 500  # number of runs
 tauM <- replicate(M, {
+  # generate data for linear and non-linear cases
   N <- 100
   x <- runif(N,-0.5,3)
   ps <- function(x) 1/(1 + exp(2 - 1.8*x))
@@ -246,16 +252,21 @@ tauM <- replicate(M, {
   psi1 <- 1.5
   y1 <- -1.4 + 0.8*x + psi0*a + psi1*a*x + rnorm(N)
   y2 <- -1.4*x^3 + exp(x) + psi0*a + psi1*a*x + rnorm(N)
+  # estimate probability of treatment
   pm <- glm(a ~ x,family = binomial())
   X <- cbind(rep(1,N),x)
   ph <- fitted(pm)
+  # estimate treatment effect
   g1 <- as.vector(gest_snmm(X,y1,a,ph))
   g2 <- as.vector(gest_snmm(X,y2,a,ph))
   ols1 <- lm(y1 ~ x + a + x*a)$coef[c("a","x:a")]
   ols2 <- lm(y2 ~ x + a + x*a)$coef[c("a","x:a")]
   c(g1,g2,ols1,ols2)
 })
+```
 
+
+```{r,fig.cap="A comparison of OLS estimation of the outcome model E(Y|A,H) and G-estimation of the SNMM for a linear outcome model.",fig.height = 6}
 # plot results
 tau_df <- data.frame(t(tauM))
 names(tau_df) <- c("g1a","g1ax","g2a","g2ax",
@@ -269,17 +280,31 @@ truth_df2 <- data.frame(method = c("g2a","g2ax",
 truth_df1 <- data.frame(method = c("g1a","g1ax",
                                   "lm1a","lm1ax"),
                        estimate = c(2.5,1.5,2.5,1.5))
+truth_df1$method_labs <- factor(truth_df1$method,
+                             levels = c("g1a","g1ax","lm1a","lm1ax"),
+                             labels= c("SNMM:~psi[0]",
+                 "SNMM:~psi[1]",
+                 "Outcome~model:~psi[0]",
+                 "Outcome~model:~psi[1]"))
+truth_df2$method_labs <- factor(truth_df2$method,
+                             levels = c("g2a","g2ax","lm2a","lm2ax"),
+                             labels= c("SNMM:~psi[0]",
+                 "SNMM:~psi[1]",
+                 "Outcome~model:~psi[0]",
+                 "Outcome~model:~psi[1]"))
 
-method_labs <- c("SNMM: psi0",
-                 "SNMM: psi1",
-                 "Linear model: psi0",
-                 "Linear model: psi1",
-                 "SNMM: psi0",
-                 "SNMM: psi1",
-                 "Linear model: psi0",
-                 "Linear model: psi1")
-names(method_labs) <- c("g1a","g1ax","lm1a","lm1ax",
-                        "g2a","g2ax", "lm2a","lm2ax")
+
+tau_df$method_labs <- factor(tau_df$method,
+                             levels = c("g1a","g1ax","g2a","g2ax",
+                   "lm1a","lm1ax","lm2a","lm2ax"),
+                             labels= c("SNMM:~psi[0]",
+                 "SNMM:~psi[1]",
+                 "SNMM:~psi[0]",
+                 "SNMM:~psi[1]",
+                 "Outcome~model:~psi[0]",
+                 "Outcome~model:~psi[1]",
+                 "Outcome~model:~psi[0]",
+                 "Outcome~model:~psi[1]"))
 
 tau_df %>%
   filter(method %in% c("g1a","g1ax","lm1a","lm1ax")) %>%
@@ -289,12 +314,12 @@ tau_df %>%
   geom_vline(data = truth_df1, aes(xintercept = estimate),
              col="red",linetype=2) +
   theme_bw() +
-  facet_wrap(~method,ncol=1,
-             labeller = labeller(method = method_labs)) +
-  labs(title = "(I) Linear")
+  facet_wrap(~method_labs,ncol=1,
+             labeller = label_parsed) +
+  labs(title = "(I) Linear",x = "Model estimate")
 ```
 
-```{r,fig.cap="Figure Xa"}
+```{r,fig.cap=,fig.cap="A comparison of OLS estimation of the outcome model E(Y|A,H) and G-estimation of the SNMM for a non-linear outcome model.",fig.height = 6}
 # plot results
 tau_df %>%
   filter(method %in% c("g2a","g2ax","lm2a","lm2ax")) %>%
@@ -304,9 +329,9 @@ tau_df %>%
   geom_vline(data = truth_df2, aes(xintercept = estimate),
              col="red",linetype=2) +
   theme_bw() +
-  facet_wrap(~method,ncol=1,
-             labeller = labeller(method = method_labs)) +
-  labs(title = "(I) Non-linear")
+  facet_wrap(~method_labs,ncol=1,
+             labeller = label_parsed) +
+  labs(title = "(I) Non-linear",x = "Model estimate")
 ```
 
 # Standard errors and confidence intervals
@@ -321,7 +346,7 @@ Above we use an emprical version of $E(Y(0)(A-S(A|H))|H)=0$ as out estimating eq
 
 $$
 \begin{align}
-\boldsymbol{\psi_e} &= (\textbf{H}^t\textbf{W}\textbf{A}\textbf{H})^{-1}\textbf{H}^t\textbf{W}(\textbf{y}-m_0)
+\hat{\boldsymbol{\psi}}_e &= (\textbf{H}^t\textbf{W}\textbf{A}\textbf{H})^{-1}\textbf{H}^t\textbf{W}(\textbf{y}-\hat{m}_0)
 \end{align}
 $$
 
@@ -333,7 +358,7 @@ So far we have talked about and simulated linear $\tau(h)$, but what if the effe
 
 $$
 \begin{align}
-\boldsymbol{\psi_e} &= (\boldsymbol{\Phi}^t\textbf{W}\textbf{A}\boldsymbol{\Phi})^{-1}\boldsymbol{\Phi}^t\textbf{W}(\textbf{y}-m_0)
+\hat{\boldsymbol{\psi}}_e &= (\boldsymbol{\Phi}^t\textbf{W}\textbf{A}\boldsymbol{\Phi})^{-1}\boldsymbol{\Phi}^t\textbf{W}(\textbf{y}-\hat{m}_0)
 \end{align}
 $$
 
@@ -341,10 +366,11 @@ To illustrate this, lets do another simulation. In this case $\tau$ is non-linea
 
 For this simulation I've increased the sample size to $N=1000$.
 
-```{r}
-# perform a simulation
-M <- 500
+```{r echo=TRUE}
+## SIMULATION 3
+M <- 500  # number of runs
 tauM <- replicate(M, {
+  # generate data
   N <- 1000
   x1 <- runif(N,-0.5,3)
   x2 <- rnorm(N,2,3)
@@ -354,9 +380,11 @@ tauM <- replicate(M, {
   psi1 <- 1.5
   tau <- psi0 + 0.7*exp(x1) + 0.5*x2 + 0.4*x2^2 + rnorm(N)
   y <- 1.2*x2 - 1.4*x2^2 + 0.8*exp(x1) + a*tau + rnorm(N,sd = 3)
+  # estimate probability of treatment
   pm <- glm(a ~ x1 + x2,family = binomial())
   Xs <-  cbind(rep(1,N),bs(x1),bs(x2))
   ph <- fitted(pm)
+  # estimate treatment effect
   ols <- lm(y ~ bs(x1) + bs(x2) + a + bs(x1)*a + bs(x2)*a)
   df0 <- data.frame(x1,x2,a=0)
   df1 <- data.frame(x1,x2,a=1)
@@ -371,7 +399,7 @@ tauM <- replicate(M, {
 ```
 
 
-```{r,fig.cap=""}
+```{r,fig.cap="Average bias of individual treatment effect"}
 # plot results
 tau_df <- data.frame(t(tauM))
 bias_df <- tau_df[,c("bias_g","bias_l")]
@@ -380,7 +408,7 @@ bias_df <- pivot_longer(bias_df,1:2,names_to = "method",
                        values_to = "bias")
 mse_df <- pivot_longer(mse_df,1:2,names_to = "method",
                        values_to = "mse")
-method_labs <- c("SNMM","SNMM","Linear","Linear")
+method_labs <- c("SNMM","SNMM","Outcome model","Outcome model")
 names(method_labs) <- c("bias_g","mse_g","bias_l","mse_l")
 ggplot(bias_df) +
   geom_histogram(aes(x = bias,group=method),
@@ -388,17 +416,17 @@ ggplot(bias_df) +
   facet_wrap(~method,ncol=1,
              labeller = labeller(method = method_labs)) +
   theme_bw() +
-  labs(title = "(I) Average bias of individual treatment effect")
+  labs(x = "Bias of individual treatment effect estimate")
 ```
 
-```{r,fig.cap=""}
+```{r,fig.cap="Average meas square error of individual treatment effect"}
 ggplot(mse_df) +
   geom_histogram(aes(x = mse,group=method),
                  col="white",fill="skyblue") +
   facet_wrap(~method,ncol=1,
              labeller = labeller(method = method_labs)) +
   theme_bw() +
-  labs(title = "(II) Average MSE of individual treatment effect")
+  labs(x = "MSE of individual treatment effect estimate")
 ```
 
 # Conclusion and up-next
