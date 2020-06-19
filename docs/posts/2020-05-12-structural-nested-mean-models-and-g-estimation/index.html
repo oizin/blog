@@ -1,0 +1,1801 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+  <!--radix_placeholder_meta_tags-->
+<title>Data and Decisions: Structural Nested Mean Models and G-Estimation: Part I</title>
+
+<meta property="description" itemprop="description" content="An introduction to structural nested mean models for causal inference"/>
+
+
+<!--  https://schema.org/Article -->
+<meta property="article:published" itemprop="datePublished" content="2020-06-19"/>
+<meta property="article:created" itemprop="dateCreated" content="2020-06-19"/>
+<meta name="article:author" content="Oisin Fitzgerald"/>
+
+<!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+<meta property="og:title" content="Data and Decisions: Structural Nested Mean Models and G-Estimation: Part I"/>
+<meta property="og:type" content="article"/>
+<meta property="og:description" content="An introduction to structural nested mean models for causal inference"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="Data and Decisions"/>
+
+<!--  https://dev.twitter.com/cards/types/summary -->
+<meta property="twitter:card" content="summary"/>
+<meta property="twitter:title" content="Data and Decisions: Structural Nested Mean Models and G-Estimation: Part I"/>
+<meta property="twitter:description" content="An introduction to structural nested mean models for causal inference"/>
+
+<!--/radix_placeholder_meta_tags-->
+  
+  <meta name="citation_reference" content="citation_title=A new approach to causal inference in mortality studies with a sustained exposure periodâ€”application to control of the healthy worker survivor effect;citation_publication_date=1986;citation_publisher=Elsevier;citation_volume=7;citation_author=James Robins"/>
+  <meta name="citation_reference" content="citation_title=Marginal structural models and causal inference in epidemiology;citation_publication_date=2000;citation_publisher=LWW;citation_author=James M Robins;citation_author=Miguel Angel Hernan;citation_author=Babette Brumback"/>
+  <meta name="citation_reference" content="citation_title=G-estimation of the effect of prophylaxis therapy for pneumocystis carinii pneumonia on the survival of aids patients;citation_publication_date=1992;citation_publisher=JSTOR;citation_author=James M Robins;citation_author=Donald Blevins;citation_author=Grant Ritter;citation_author=Michael Wulfsohn"/>
+  <meta name="citation_reference" content="citation_title=Statistical methods for dynamic treatment regimes: Reinforcement learning, causal inference, and personalized medicine;citation_publication_date=2013;citation_publisher=Springer;citation_author=Bibhas Chakraborty;citation_author=Erica EM Moodie"/>
+  <meta name="citation_reference" content="citation_title=Effect of intensive vs standard blood pressure control on probable dementia: A randomized clinical trial;citation_publication_date=2019;citation_publisher=American Medical Association;citation_volume=321;citation_author=Jeff D Williamson;citation_author=Nicholas M Pajewski;citation_author=Alexander P Auchus;citation_author=R Nick Bryan;citation_author=Gordon Chelune;citation_author=Alfred K Cheung;citation_author=Maryjo L Cleveland;citation_author=Laura H Coker;citation_author=Michael G Crowe;citation_author=William C Cushman;citation_author=Effect of intensive vs standard blood pressure control on probable dementia: A randomized clinical trial"/>
+  <meta name="citation_reference" content="citation_title=Statistics and causal inference;citation_publication_date=1986;citation_publisher=Taylor &amp; Francis;citation_volume=81;citation_author=Paul W Holland"/>
+  <meta name="citation_reference" content="citation_title=Causal inference in statistics: An overview;citation_publication_date=2009;citation_publisher=The author, under a Creative Commons Attribution License;citation_volume=3;citation_author=Judea Pearl;citation_author=Causal inference in statistics: An overview"/>
+  <meta name="citation_reference" content="citation_title=Start with the â€™c-word,â€™ follow the roadmap for causal inference;citation_publication_date=2018;citation_publisher=American Public Health Association;citation_author=Jennifer Ahern"/>
+  <meta name="citation_reference" content="citation_title=Causal inference: What if?;citation_publication_date=2020;citation_publisher=Boca Raton: Chapman &amp; Hall/CRC;;citation_author=Miguel A Hernan;citation_author=James M Robins"/>
+  <meta name="citation_reference" content="citation_title=Generalized random forests;citation_publication_date=2019;citation_publisher=Institute of Mathematical Statistics;citation_volume=47;citation_author=Susan Athey;citation_author=Julie Tibshirani;citation_author=Stefan Wager;citation_author=Generalized random forests"/>
+  <meta name="citation_reference" content="citation_title=Quasi-oracle estimation of heterogeneous treatment effects;citation_publication_date=2017;citation_author=Xinkun Nie;citation_author=Stefan Wager"/>
+  <meta name="citation_reference" content="citation_title=Bayesian regression tree models for causal inference: Regularization, confounding, and heterogeneous effects;citation_publication_date=2020;citation_publisher=International Society for Bayesian Analysis;citation_author=P Richard Hahn;citation_author=Jared S Murray;citation_author=Carlos M Carvalho;citation_author=Bayesian regression tree models for causal inference: Regularization, confounding, and heterogeneous effects"/>
+  <meta name="citation_reference" content="citation_title=Generalized random forests;citation_publication_date=2019;citation_publisher=Institute of Mathematical Statistics;citation_volume=47;citation_author=Susan Athey;citation_author=Julie Tibshirani;citation_author=Stefan Wager;citation_author=Generalized random forests"/>
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+<script type="text/json" id="radix-rmarkdown-metadata">
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","output","bibliography","date"]}},"value":[{"type":"character","attributes":{},"value":["Structural Nested Mean Models and G-Estimation: Part I"]},{"type":"character","attributes":{},"value":["An introduction to structural nested mean models for causal inference"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Oisin Fitzgerald"]},{"type":"NULL"}]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["biblio.bib"]},{"type":"character","attributes":{},"value":["06-19-2020"]}]}
+</script>
+<!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["biblio.bib","confounding.png","confounding_v2.png","structural-nested-mean-models-and-g-estimation_files/bowser-1.9.3/bowser.min.js","structural-nested-mean-models-and-g-estimation_files/distill-2.2.21/template.v2.js","structural-nested-mean-models-and-g-estimation_files/elevate-section-attrs-2.0/elevate-section-attrs.js","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-1-1.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-10-1.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-11-1.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-2-1.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-2-2.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-3-1.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-4-1.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-5-1.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-1.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-10.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-100.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-101.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-102.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-103.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-104.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-105.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-106.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-107.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-108.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-109.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-11.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-110.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-111.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-112.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-113.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-114.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-115.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-116.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-117.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-118.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-119.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-12.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-120.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-121.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-122.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-123.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-124.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-125.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-126.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-127.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-128.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-129.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-13.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-130.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-131.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-132.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-133.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-134.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-135.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-136.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-137.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-138.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-139.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-14.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-140.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-141.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-142.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-143.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-144.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-145.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-146.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-147.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-148.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-149.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-15.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-150.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-151.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-152.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-153.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-154.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-155.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-156.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-157.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-158.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-159.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-16.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-160.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-161.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-162.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-163.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-164.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-165.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-166.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-167.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-168.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-169.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-17.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-170.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-171.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-172.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-173.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-174.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-175.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-176.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-177.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-178.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-179.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-18.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-180.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-181.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-182.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-183.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-184.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-185.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-186.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-187.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-188.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-189.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-19.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-190.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-191.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-192.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-193.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-194.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-195.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-196.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-197.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-198.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-199.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-2.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-20.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-200.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-201.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-202.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-203.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-204.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-205.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-206.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-207.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-208.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-209.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-21.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-210.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-211.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-212.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-213.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-214.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-215.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-216.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-217.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-218.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-219.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-22.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-220.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-221.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-222.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-223.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-224.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-225.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-226.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-227.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-228.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-229.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-23.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-230.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-231.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-232.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-233.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-234.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-235.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-236.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-237.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-238.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-239.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-24.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-240.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-241.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-242.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-243.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-244.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-245.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-246.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-247.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-248.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-249.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-25.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-250.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-251.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-252.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-253.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-254.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-255.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-256.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-257.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-258.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-259.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-26.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-260.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-261.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-262.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-263.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-264.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-265.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-266.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-267.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-268.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-269.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-27.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-270.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-271.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-272.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-273.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-274.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-275.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-276.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-277.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-278.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-279.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-28.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-280.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-281.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-282.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-283.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-284.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-285.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-286.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-287.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-288.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-289.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-29.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-290.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-291.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-292.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-293.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-294.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-295.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-296.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-297.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-298.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-299.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-3.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-30.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-300.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-301.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-302.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-303.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-304.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-305.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-306.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-307.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-308.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-309.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-31.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-310.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-311.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-312.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-313.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-314.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-315.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-316.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-317.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-318.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-319.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-32.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-320.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-321.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-322.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-323.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-324.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-325.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-326.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-327.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-328.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-329.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-33.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-330.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-331.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-332.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-333.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-334.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-335.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-336.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-337.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-338.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-339.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-34.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-340.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-341.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-342.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-343.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-344.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-345.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-346.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-347.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-348.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-349.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-35.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-350.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-351.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-352.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-353.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-354.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-355.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-356.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-357.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-358.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-359.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-36.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-360.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-361.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-362.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-363.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-364.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-365.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-366.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-367.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-368.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-369.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-37.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-370.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-371.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-372.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-373.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-374.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-375.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-376.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-377.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-378.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-379.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-38.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-380.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-381.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-382.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-383.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-384.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-385.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-386.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-387.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-388.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-389.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-39.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-390.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-391.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-392.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-393.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-394.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-395.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-396.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-397.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-398.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-399.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-4.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-40.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-400.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-401.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-402.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-403.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-404.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-405.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-406.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-407.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-408.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-409.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-41.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-410.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-411.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-412.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-413.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-414.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-415.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-416.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-417.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-418.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-419.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-42.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-420.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-421.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-422.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-423.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-424.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-425.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-426.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-427.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-428.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-429.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-43.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-430.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-431.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-432.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-433.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-434.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-435.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-436.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-437.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-438.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-439.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-44.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-440.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-441.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-442.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-443.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-444.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-445.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-446.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-447.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-448.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-449.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-45.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-450.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-451.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-452.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-453.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-454.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-455.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-456.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-457.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-458.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-459.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-46.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-460.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-461.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-462.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-463.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-464.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-465.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-466.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-467.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-468.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-469.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-47.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-470.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-471.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-472.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-473.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-474.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-475.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-476.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-477.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-478.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-479.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-48.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-480.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-481.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-482.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-483.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-484.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-485.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-486.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-487.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-488.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-489.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-49.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-490.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-491.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-492.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-493.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-494.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-495.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-496.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-497.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-498.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-499.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-5.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-50.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-500.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-51.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-52.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-53.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-54.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-55.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-56.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-57.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-58.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-59.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-6.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-60.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-61.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-62.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-63.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-64.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-65.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-66.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-67.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-68.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-69.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-7.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-70.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-71.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-72.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-73.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-74.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-75.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-76.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-77.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-78.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-79.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-8.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-80.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-81.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-82.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-83.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-84.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-85.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-86.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-87.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-88.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-89.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-9.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-90.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-91.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-92.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-93.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-94.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-95.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-96.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-97.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-98.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-6-99.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-7-1.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-8-1.png","structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-9-1.png","structural-nested-mean-models-and-g-estimation_files/jquery-1.11.3/jquery.min.js","structural-nested-mean-models-and-g-estimation_files/webcomponents-2.0.0/webcomponents.js"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+
+<script type="application/javascript">
+
+  window.headroom_prevent_pin = false;
+
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+
+    // initialize headroom for banner
+    var header = $('header').get(0);
+    var headerHeight = header.offsetHeight;
+    var headroom = new Headroom(header, {
+      onPin : function() {
+        if (window.headroom_prevent_pin) {
+          window.headroom_prevent_pin = false;
+          headroom.unpin();
+        }
+      }
+    });
+    headroom.init();
+    if(window.location.hash)
+      headroom.unpin();
+    $(header).addClass('headroom--transition');
+
+    // offset scroll location for banner on hash change
+    // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
+    window.addEventListener("hashchange", function(event) {
+      window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
+    });
+
+    // responsive menu
+    $('.distill-site-header').each(function(i, val) {
+      var topnav = $(this);
+      var toggle = topnav.find('.nav-toggle');
+      toggle.on('click', function() {
+        topnav.toggleClass('responsive');
+      });
+    });
+
+    // nav dropdowns
+    $('.nav-dropbtn').click(function(e) {
+      $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
+      $(this).parent().siblings('.nav-dropdown')
+         .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $("body").click(function(e){
+      $('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $(".nav-dropdown").click(function(e){
+      e.stopPropagation();
+    });
+  });
+</script>
+
+<style type="text/css">
+
+/* Theme (user-documented overrideables for nav appearance) */
+
+.distill-site-nav {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: #455a64;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.distill-site-nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.distill-site-nav a:hover {
+  color: white;
+}
+
+@media print {
+  .distill-site-nav {
+    display: none;
+  }
+}
+
+.distill-site-header {
+
+}
+
+.distill-site-footer {
+
+}
+
+
+/* Site Header */
+
+.distill-site-header {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.distill-site-header .nav-left {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header .nav-left {
+    margin-left: 0;
+  }
+}
+
+
+.distill-site-header .nav-right {
+  float: right;
+  margin-right: 8px;
+}
+
+.distill-site-header a,
+.distill-site-header .title {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 10px 14px 10px;
+}
+
+.distill-site-header .title {
+  font-size: 18px;
+}
+
+.distill-site-header .logo {
+  padding: 0;
+}
+
+.distill-site-header .logo img {
+  display: none;
+  max-height: 20px;
+  width: auto;
+  margin-bottom: -4px;
+}
+
+.distill-site-header .nav-image img {
+  max-height: 18px;
+  width: auto;
+  display: inline-block;
+  margin-bottom: -3px;
+}
+
+
+
+@media screen and (min-width: 1000px) {
+  .distill-site-header .logo img {
+    display: inline-block;
+  }
+  .distill-site-header .nav-left {
+    margin-left: 20px;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 20px;
+  }
+  .distill-site-header .title {
+    padding-left: 12px;
+  }
+}
+
+
+.distill-site-header .nav-toggle {
+  display: none;
+}
+
+.nav-dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.nav-dropdown .nav-dropbtn {
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 16px 10px;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  margin-top: 1px;
+  z-index: 2;
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+  z-index: 1;
+  margin-top: 2px;
+  white-space: nowrap;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.nav-dropdown-content hr {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-dropdown-active {
+  display: block;
+}
+
+.nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
+  color: black;
+  padding: 6px 24px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.nav-dropdown-content .nav-dropdown-header {
+  display: block;
+  padding: 5px 24px;
+  padding-bottom: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #999999;
+  white-space: nowrap;
+}
+
+.nav-dropdown:hover .nav-dropbtn {
+  color: white;
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.nav-right .nav-dropdown-content {
+  margin-left: -45%;
+  right: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
+  .distill-site-header a.nav-toggle {
+    float: right;
+    display: block;
+  }
+  .distill-site-header .title {
+    margin-left: 0;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 0;
+  }
+  .distill-site-header {
+    overflow: hidden;
+  }
+  .nav-right .nav-dropdown-content {
+    margin-left: 0;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-header.responsive {position: relative;}
+  .distill-site-header.responsive a.nav-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .distill-site-header.responsive a,
+  .distill-site-header.responsive .nav-dropdown {
+    display: block;
+    text-align: left;
+  }
+  .distill-site-header.responsive .nav-left,
+  .distill-site-header.responsive .nav-right {
+    width: 100%;
+  }
+  .distill-site-header.responsive .nav-dropdown {float: none;}
+  .distill-site-header.responsive .nav-dropdown-content {position: relative;}
+  .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Site Footer */
+
+.distill-site-footer {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 3;
+  margin-top: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+/* Headroom */
+
+d-title {
+  padding-top: 6rem;
+}
+
+@media print {
+  d-title {
+    padding-top: 4rem;
+  }
+}
+
+.headroom {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.headroom--transition {
+  transition: all .4s ease-in-out;
+}
+
+.headroom--unpinned {
+  top: -100px;
+}
+
+.headroom--pinned {
+  top: 0;
+}
+
+</style>
+
+<link href="../../site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
+<link href="../../site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
+<script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
+<!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+<style type="text/css">
+
+body {
+  background-color: white;
+}
+
+.pandoc-table {
+  width: 100%;
+}
+
+.pandoc-table>caption {
+  margin-bottom: 10px;
+}
+
+.pandoc-table th:not([align]) {
+  text-align: left;
+}
+
+.pagedtable-footer {
+  font-size: 15px;
+}
+
+.html-widget {
+  margin-bottom: 2.0em;
+}
+
+.l-screen-inset {
+  padding-right: 16px;
+}
+
+.l-screen .caption {
+  margin-left: 10px;
+}
+
+.shaded {
+  background: rgb(247, 247, 247);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .html-widget {
+  margin-bottom: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .shaded-content {
+  background: white;
+}
+
+.text-output {
+  margin-top: 0;
+  line-height: 1.5em;
+}
+
+.hidden {
+  display: none !important;
+}
+
+d-article {
+  padding-bottom: 30px;
+}
+
+d-appendix {
+  padding-top: 30px;
+}
+
+d-article>p>img {
+  width: 100%;
+}
+
+d-article iframe {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 2.0em;
+  width: 100%;
+}
+
+figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+/* CSS for table of contents */
+
+.d-toc {
+  color: rgba(0,0,0,0.8);
+  font-size: 0.8em;
+  line-height: 1em;
+}
+
+.d-toc-header {
+  font-size: 0.6rem;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  margin-top: 0;
+  margin-bottom: 1.3em;
+}
+
+.d-toc a {
+  border-bottom: none;
+}
+
+.d-toc ul {
+  padding-left: 0;
+}
+
+.d-toc li>ul {
+  padding-top: 0.8em;
+  padding-left: 16px;
+  margin-bottom: 0.6em;
+}
+
+.d-toc ul,
+.d-toc li {
+  list-style-type: none;
+}
+
+.d-toc li {
+  margin-bottom: 0.9em;
+}
+
+.d-toc-separator {
+  margin-top: 20px;
+  margin-bottom: 2em;
+}
+
+.d-article-with-toc {
+  border-top: none;
+  padding-top: 0;
+}
+
+
+
+/* Tweak code blocks (note that this CSS is repeated above in an injection
+   into the d-code shadow dom) */
+
+d-code {
+  overflow-x: auto !important;
+}
+
+pre.d-code code.d-code {
+  padding-left: 10px;
+  font-size: 12px;
+  border-left: 2px solid rgba(0,0,0,0.1);
+}
+
+pre.text-output {
+
+  font-size: 12px;
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+@media(min-width: 768px) {
+
+d-code {
+  overflow-x: visible !important;
+}
+
+pre.d-code code.d-code  {
+    padding-left: 18px;
+    font-size: 14px;
+}
+pre.text-output {
+  font-size: 14px;
+}
+}
+
+/* Figure */
+
+.figure {
+  position: relative;
+  margin-bottom: 2.5em;
+  margin-top: 1.5em;
+}
+
+.figure img {
+  width: 100%;
+}
+
+.figure .caption {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  line-height: 1.5em;
+}
+
+.figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.figure .caption a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.figure .caption b,
+.figure .caption strong, {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1.0);
+}
+
+
+
+/* Tweak 1000px media break to show more text */
+
+@media(min-width: 1000px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 16px;
+  }
+
+  .grid {
+    grid-column-gap: 16px;
+  }
+
+  d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+  }
+  figure .caption, .figure .caption, figure figcaption {
+    font-size: 13px;
+  }
+}
+
+@media(min-width: 1180px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 32px;
+  }
+
+  .grid {
+    grid-column-gap: 32px;
+  }
+}
+
+
+/* Get the citation styles for the appendix (not auto-injected on render since
+   we do our own rendering of the citation appendix) */
+
+d-appendix .citation-appendix,
+.d-appendix .citation-appendix {
+  font-size: 11px;
+  line-height: 15px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: 18px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.02);
+  padding: 10px 18px;
+  border-radius: 3px;
+  color: rgba(150, 150, 150, 1);
+  overflow: hidden;
+  margin-top: -12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+
+/* Social footer */
+
+.social_footer {
+  margin-top: 30px;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.67);
+}
+
+.disqus-comments {
+  margin-right: 30px;
+}
+
+.disqus-comment-count {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+#disqus_thread {
+  margin-top: 30px;
+}
+
+.article-sharing a {
+  border-bottom: none;
+  margin-right: 8px;
+}
+
+.article-sharing a:hover {
+  border-bottom: none;
+}
+
+.sidebar-section.subscribe {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.subscribe p {
+  margin-bottom: 0.5em;
+}
+
+
+.article-footer .subscribe {
+  font-size: 15px;
+  margin-top: 45px;
+}
+
+
+/* Improve display for browsers without grid (IE/Edge <= 15) */
+
+.downlevel {
+  line-height: 1.6em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+}
+
+.downlevel .d-title {
+  padding-top: 6rem;
+  padding-bottom: 1.5rem;
+}
+
+.downlevel .d-title h1 {
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1.1em;
+  margin: 0 0 0.5rem;
+}
+
+.downlevel .d-title p {
+  font-weight: 300;
+  font-size: 1.2rem;
+  line-height: 1.55em;
+  margin-top: 0;
+}
+
+.downlevel .d-byline {
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  font-size: 0.8rem;
+  line-height: 1.8em;
+}
+
+.downlevel .section-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.downlevel .d-article {
+  font-size: 1.06rem;
+  line-height: 1.7em;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+
+.downlevel .d-appendix {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.5);
+  padding-top: 40px;
+  padding-bottom: 48px;
+}
+
+.downlevel .footnotes ol {
+  padding-left: 13px;
+}
+
+.downlevel .base-grid,
+.downlevel .distill-header,
+.downlevel .d-title,
+.downlevel .d-abstract,
+.downlevel .d-article,
+.downlevel .d-appendix,
+.downlevel .distill-appendix,
+.downlevel .d-byline,
+.downlevel .d-footnote-list,
+.downlevel .d-citation-list,
+.downlevel .distill-footer,
+.downlevel .appendix-bottom,
+.downlevel .posts-container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+@media(min-width: 768px) {
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+  padding-left: 150px;
+  padding-right: 150px;
+  max-width: 900px;
+}
+}
+
+.downlevel pre code {
+  display: block;
+  border-left: 2px solid rgba(0, 0, 0, .1);
+  padding: 0 0 0 20px;
+  font-size: 14px;
+}
+
+.downlevel code, .downlevel pre {
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+</style>
+
+<script type="application/javascript">
+
+function is_downlevel_browser() {
+  if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                 window.navigator.userAgent)) {
+    return true;
+  } else {
+    return window.load_distill_framework === undefined;
+  }
+}
+
+// show body when load is complete
+function on_load_complete() {
+
+  // set body to visible
+  document.body.style.visibility = 'visible';
+
+  // force redraw for leaflet widgets
+  if (window.HTMLWidgets) {
+    var maps = window.HTMLWidgets.findAll(".leaflet");
+    $.each(maps, function(i, el) {
+      var map = this.getMap();
+      map.invalidateSize();
+      map.eachLayer(function(layer) {
+        if (layer instanceof L.TileLayer)
+          layer.redraw();
+      });
+    });
+  }
+
+  // trigger 'shown' so htmlwidgets resize
+  $('d-article').trigger('shown');
+}
+
+function init_distill() {
+
+  init_common();
+
+  // create front matter
+  var front_matter = $('<d-front-matter></d-front-matter>');
+  $('#distill-front-matter').wrap(front_matter);
+
+  // create d-title
+  $('.d-title').changeElementType('d-title');
+
+  // create d-byline
+  var byline = $('<d-byline></d-byline>');
+  $('.d-byline').replaceWith(byline);
+
+  // create d-article
+  var article = $('<d-article></d-article>');
+  $('.d-article').wrap(article).children().unwrap();
+
+  // move posts container into article
+  $('.posts-container').appendTo($('d-article'));
+
+  // create d-appendix
+  $('.d-appendix').changeElementType('d-appendix');
+
+  // create d-bibliography
+  var bibliography = $('<d-bibliography></d-bibliography>');
+  $('#distill-bibliography').wrap(bibliography);
+
+  // flag indicating that we have appendix items
+  var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+  // replace citations with <d-cite>
+  $('.citation').each(function(i, val) {
+    appendix = true;
+    var cites = $(this).attr('data-cites').split(" ");
+    var dt_cite = $('<d-cite></d-cite>');
+    dt_cite.attr('key', cites.join());
+    $(this).replaceWith(dt_cite);
+  });
+  // remove refs
+  $('#refs').remove();
+
+  // replace footnotes with <d-footnote>
+  $('.footnote-ref').each(function(i, val) {
+    appendix = true;
+    var href = $(this).attr('href');
+    var id = href.replace('#', '');
+    var fn = $('#' + id);
+    var fn_p = $('#' + id + '>p');
+    fn_p.find('.footnote-back').remove();
+    var text = fn_p.html();
+    var dtfn = $('<d-footnote></d-footnote>');
+    dtfn.html(text);
+    $(this).replaceWith(dtfn);
+  });
+  // remove footnotes
+  $('.footnotes').remove();
+
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    var id = $(this).attr('id');
+    $('.d-toc a[href="#' + id + '"]').parent().remove();
+    appendix = true;
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+  });
+
+  // show d-appendix if we have appendix content
+  $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+  // replace code blocks with d-code
+  $('pre>code').each(function(i, val) {
+    var code = $(this);
+    var pre = code.parent();
+    var clz = "";
+    var language = pre.attr('class');
+    if (language) {
+      // map unknown languages to "clike" (without this they just dissapear)
+      if ($.inArray(language, ["bash", "clike", "css", "go", "html",
+                               "javascript", "js", "julia", "lua", "markdown",
+                               "markup", "mathml", "python", "svg", "xml"]) == -1)
+        language = "clike";
+      language = ' language="' + language + '"';
+      var dt_code = $('<d-code block' + language + clz + '></d-code>');
+      dt_code.text(code.text());
+      pre.replaceWith(dt_code);
+    } else {
+      code.addClass('text-output').unwrap().changeElementType('pre');
+    }
+  });
+
+  // localize layout chunks to just output
+  $('.layout-chunk').each(function(i, val) {
+
+    // capture layout
+    var layout = $(this).attr('data-layout');
+
+    // apply layout to markdown level block elements
+    var elements = $(this).children().not('d-code, pre.text-output, script');
+    elements.each(function(i, el) {
+      var layout_div = $('<div class="' + layout + '"></div>');
+      if (layout_div.hasClass('shaded')) {
+        var shaded_content = $('<div class="shaded-content"></div>');
+        $(this).wrap(shaded_content);
+        $(this).parent().wrap(layout_div);
+      } else {
+        $(this).wrap(layout_div);
+      }
+    });
+
+
+    // unwrap the layout-chunk div
+    $(this).children().unwrap();
+  });
+
+  // load distill framework
+  load_distill_framework();
+
+  // wait for window.distillRunlevel == 4 to do post processing
+  function distill_post_process() {
+
+    if (!window.distillRunlevel || window.distillRunlevel < 4)
+      return;
+
+    // hide author/affiliations entirely if we have no authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+    if (!have_authors)
+      $('d-byline').addClass('hidden');
+
+    // table of contents
+    if (have_authors) // adjust border if we are in authors
+      $('.d-toc').parent().addClass('d-article-with-toc');
+
+    // strip links that point to #
+    $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+    // hide elements of author/affiliations grid that have no value
+    function hide_byline_column(caption) {
+      $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+    }
+
+    // affiliations
+    var have_affiliations = false;
+    for (var i = 0; i<front_matter.authors.length; ++i) {
+      var author = front_matter.authors[i];
+      if (author.affiliation !== "&nbsp;") {
+        have_affiliations = true;
+        break;
+      }
+    }
+    if (!have_affiliations)
+      $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+    // published date
+    if (!front_matter.publishedDate)
+      hide_byline_column("Published");
+
+    // document object identifier
+    var doi = $('d-byline').find('h3:contains("DOI")');
+    var doi_p = doi.next().empty();
+    if (!front_matter.doi) {
+      // if we have a citation and valid citationText then link to that
+      if ($('#citation').length > 0 && front_matter.citationText) {
+        doi.html('Citation');
+        $('<a href="#citation"></a>')
+          .text(front_matter.citationText)
+          .appendTo(doi_p);
+      } else {
+        hide_byline_column("DOI");
+      }
+    } else {
+      $('<a></a>')
+         .attr('href', "https://doi.org/" + front_matter.doi)
+         .html(front_matter.doi)
+         .appendTo(doi_p);
+    }
+
+     // change plural form of authors/affiliations
+    if (front_matter.authors.length === 1) {
+      var grid = $('.authors-affiliations');
+      grid.children('h3:contains("Authors")').text('Author');
+      grid.children('h3:contains("Affiliations")').text('Affiliation');
+    }
+
+    // inject pre code styles (can't do this with a global stylesheet b/c a shadow root is used)
+    $('d-code').each(function(i, val) {
+      var style = document.createElement('style');
+      style.innerHTML = 'pre code { padding-left: 10px; font-size: 12px; border-left: 2px solid rgba(0,0,0,0.1); } ' +
+                        '@media(min-width: 768px) { pre code { padding-left: 18px; font-size: 14px; } }';
+      if (this.shadowRoot)
+        this.shadowRoot.appendChild(style);
+    });
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // clear polling timer
+    clearInterval(tid);
+
+    // show body now that everything is ready
+    on_load_complete();
+  }
+
+  var tid = setInterval(distill_post_process, 50);
+  distill_post_process();
+
+}
+
+function init_downlevel() {
+
+  init_common();
+
+   // insert hr after d-title
+  $('.d-title').after($('<hr class="section-separator"/>'));
+
+  // check if we have authors
+  var front_matter = JSON.parse($("#distill-front-matter").html());
+  var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+  // manage byline/border
+  if (!have_authors)
+    $('.d-byline').remove();
+  $('.d-byline').after($('<hr class="section-separator"/>'));
+  $('.d-byline a').remove();
+
+  // remove toc
+  $('.d-toc-header').remove();
+  $('.d-toc').remove();
+  $('.d-toc-separator').remove();
+
+  // move appendix elements
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+  });
+
+
+  // inject headers into references and footnotes
+  var refs_header = $('<h3></h3>');
+  refs_header.text('References');
+  $('#refs').prepend(refs_header);
+
+  var footnotes_header = $('<h3></h3');
+  footnotes_header.text('Footnotes');
+  $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+  // move appendix-bottom entries to the bottom
+  $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+  $('.appendix-bottom').remove();
+
+  // remove appendix if it's empty
+  if ($('.d-appendix').children().length === 0)
+    $('.d-appendix').remove();
+
+  // prepend separator above appendix
+  $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+  // trim code
+  $('pre>code').each(function(i, val) {
+    $(this).html($.trim($(this).html()));
+  });
+
+  // move posts-container right before article
+  $('.posts-container').insertBefore($('.d-article'));
+
+  $('body').addClass('downlevel');
+
+  on_load_complete();
+}
+
+
+function init_common() {
+
+  // jquery plugin to change element types
+  (function($) {
+    $.fn.changeElementType = function(newType) {
+      var attrs = {};
+
+      $.each(this[0].attributes, function(idx, attr) {
+        attrs[attr.nodeName] = attr.nodeValue;
+      });
+
+      this.replaceWith(function() {
+        return $("<" + newType + "/>", attrs).append($(this).contents());
+      });
+    };
+  })(jQuery);
+
+  // prevent underline for linked images
+  $('a > img').parent().css({'border-bottom' : 'none'});
+
+  // mark non-body figures created by knitr chunks as 100% width
+  $('.layout-chunk').each(function(i, val) {
+    var figures = $(this).find('img, .html-widget');
+    if ($(this).attr('data-layout') !== "l-body") {
+      figures.css('width', '100%');
+    } else {
+      figures.css('max-width', '100%');
+      figures.filter("[width]").each(function(i, val) {
+        var fig = $(this);
+        fig.css('width', fig.attr('width') + 'px');
+      });
+
+    }
+  });
+
+  // auto-append index.html to post-preview links in file: protocol
+  // and in rstudio ide preview
+  $('.post-preview').each(function(i, val) {
+    if (window.location.protocol === "file:")
+      $(this).attr('href', $(this).attr('href') + "index.html");
+  });
+
+  // get rid of index.html references in header
+  if (window.location.protocol !== "file:") {
+    $('.distill-site-header a[href]').each(function(i,val) {
+      $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+    });
+  }
+
+  // add class to pandoc style tables
+  $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+  $('.kable-table').children('table').addClass('pandoc-table');
+
+  // add figcaption style to table captions
+  $('caption').parent('table').addClass("figcaption");
+
+  // initialize posts list
+  if (window.init_posts_list)
+    window.init_posts_list();
+
+  // implmement disqus comment link
+  $('.disqus-comment-count').click(function() {
+    window.headroom_prevent_pin = true;
+    $('#disqus_thread').toggleClass('hidden');
+    if (!$('#disqus_thread').hasClass('hidden')) {
+      var offset = $(this).offset();
+      $(window).resize();
+      $('html, body').animate({
+        scrollTop: offset.top - 35
+      });
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (is_downlevel_browser())
+    init_downlevel();
+  else
+    window.addEventListener('WebComponentsReady', init_distill);
+});
+
+</script>
+
+<!--/radix_placeholder_distill-->
+  <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="../../site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
+  <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
+  <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="../../site_libs/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+<!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Structural Nested Mean Models and G-Estimation: Part I","description":"An introduction to structural nested mean models for causal inference","authors":[{"author":"Oisin Fitzgerald","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#"}],"publishedDate":"2020-06-19T00:00:00.000+10:00","citationText":"Fitzgerald, 2020"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<header class="header header--fixed" role="banner">
+<nav class="distill-site-nav distill-site-header">
+<div class="nav-left">
+<a href="../../index.html" class="title">Data and Decisions</a>
+</div>
+<div class="nav-right">
+<a href="../../index.html">Home</a>
+<a href="../../about.html">About</a>
+<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
+</div>
+</nav>
+</header>
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Structural Nested Mean Models and G-Estimation: Part I</h1>
+<p><p>An introduction to structural nested mean models for causal inference</p></p>
+</div>
+
+<div class="d-byline">
+  Oisin Fitzgerald  
+  
+<br/>06-19-2020
+</div>
+
+<div class="d-article">
+<h1 id="introduction">Introduction</h1>
+<h2 id="what-problem-are-we-solving">What problem are we solving?</h2>
+<p>Causal inference considers questions such as: what would be the impact of giving someone a particular drug? There is a sense of action in a causal question, we are going to <strong>do</strong> something<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. An associational question on the other hand, would ask: what is the most likely outcome of someone who is receiving a particular drug? It is passive (but still useful - e.g. predictive modelling). It is generally not the case that the answers to causal and associational questions will be the same, they can even lead to seemingly conflicting results. Most medical research asks a causal question; we wish to inform decisions. It is important we use the appropriate causal methods and thinking to answer the question (see Hernan &amp; Robins <span class="citation" data-cites="hernan2010causal">Hernan and Robins (<a href="#ref-hernan2010causal" role="doc-biblioref">2020</a>)</span> for an in-depth treatment of this issue). There are many important considerations in answering causal questions from whether the question is worth answering, to what data needs to be collected (see Ahern <span class="citation" data-cites="ahern2018start">Ahern (<a href="#ref-ahern2018start" role="doc-biblioref">2018</a>)</span> for a good outline). This post considers arguably the least important aspect - the statistical methodology used to estimate the causal model parameters. I’ll outline (as I poorly understand it) G-estimation of <em>structural nested mean models (SNMM)</em> for a single timepoint and two treatment options, and show some simulations along the way. First a brief review of the potential outcomes framework, those familiar with it can skip to the next section.</p>
+<h2 id="potential-outcomes-framework">Potential outcomes framework</h2>
+<p>Within the potential outcomes framework causal inference becomes a missing data problem. For the case of two treatment levels <span class="math inline">\(A \in \{0,1\}\)</span> there are two potential outcomes <span class="math inline">\(Y(1)\)</span> and <span class="math inline">\(Y(0)\)</span>. If someone gets <span class="math inline">\(A=0\)</span> then the observed outcome is <span class="math inline">\(Y=Y(0)\)</span> (referred to as consistency), and <span class="math inline">\(Y(1)\)</span> is the <em>counterfactual</em>. That we only observe one potential outcome per person at a given time is referred to as the <em>fundamental problem of causal inference</em> <span class="citation" data-cites="holland1986statistics">(Holland <a href="#ref-holland1986statistics" role="doc-biblioref">1986</a>)</span>. Our aim is to calculate the conditional average treatment effect (CATE) <span class="math inline">\(\tau(m) = E(Y(1)-Y(0)|M=m)\)</span> where <span class="math inline">\(M\)</span> is a vector of effect modifiers.</p>
+<p>To answer causal questions in a given dataset we require knowledge (or must make assumptions about) about the data generating process - in particular aspects of the treatment decision process (why did the clinical give patient A a particular drug?) and the outcome process (what is it about patient A that increases their risk of a particular outcome?). This knowledge allows us assess whether we can assume conditional exchangeability (unconfoundedness), that within strata of <span class="math inline">\(H\)</span> we can consider treatment to have been randomly assigned. This assumption is key to constructing our estimation process and represents the key difference between causal and associational analysis.</p>
+<p><span class="math display">\[Y(a) \perp A |H=h\]</span> To see this consider the canonical confounding example where sicker patients are more likely to get treated with a particular medicine. A naive comparison of outcomes <span class="math inline">\(E(Y|A=1) - E(Y|A=0)\)</span> amongst patients who did and did not receive the medicine may lead to the impression that treatment is harmful. However, if the treatment decision has been based on an illness severity factor <span class="math inline">\(X_1\)</span> that combines all factors predictive of the disease outcome then we have a biased result</p>
+<p><span class="math display">\[E(Y|A=1) - E(Y|A=0) \ne E(Y(1) - Y(0))\]</span></p>
+<p>In our example, only by accounting for <span class="math inline">\(X_1\)</span> can we get an unconfounded case where conditional exhangeability holds and the previous inequality becomes an equality. In practise, we will need to make certain assumptions around the data generating process (often reasonable but usually unverifiable) in order to be able to calculate an unbiased treatment difference.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:unnamed-chunk-1"></span>
+<img src="confounding_v2.png" alt="Illustration of confounding`. The more severely ill (high X1) are more likely to get treated leading to the situation where the average outcome is worse in the treated." width="819" />
+<p class="caption">
+Figure 1: Illustration of confounding`. The more severely ill (high X1) are more likely to get treated leading to the situation where the average outcome is worse in the treated.
+</p>
+</div>
+</div>
+<h2 id="g-methods-family">G-methods Family</h2>
+<p>Not all statistical approaches that work for treatment comparison at a single timepoint generalise to situations involving time-varying treatments<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. The G (generalised) methods, developed by James Robins and colleagues - including structural nested mean models (SNMM) <span class="citation" data-cites="robins1992g">(Robins et al. <a href="#ref-robins1992g" role="doc-biblioref">1992</a>)</span>, marginal structural models <span class="citation" data-cites="robins2000marginal">(Robins, Hernan, and Brumback <a href="#ref-robins2000marginal" role="doc-biblioref">2000</a>)</span> and G-computation <span class="citation" data-cites="robins1986new">(Robins <a href="#ref-robins1986new" role="doc-biblioref">1986</a>)</span>, apply in both single and multi-stage treatment effect estimation. If we want to compare the effectiveness of two treatment regimes or policies (e.g. intensive versus standard blood pressure control <span class="citation" data-cites="williamson2019effect">(Williamson et al. <a href="#ref-williamson2019effect" role="doc-biblioref">2019</a>)</span>) using an observational sources such as electronic medical records understanding the ideas underpinning the G-methods is worthwhile.</p>
+<h1 id="structural-nested-mean-models">Structural Nested Mean Models</h1>
+<p>Assume we observe a dataset <span class="math inline">\(Z = (H,Y,A)\)</span> where <span class="math inline">\(H\)</span> is the patient history (covariates; e.g. blood pressure), <span class="math inline">\(Y\)</span> is the outcome of interest and <span class="math inline">\(A\)</span> is the treatment indicator. SNMM involves fitting a model for the conditional treatment contrast <span class="math inline">\(\tau(m) = E[Y(1)-Y(0)|M=m]\)</span> where <span class="math inline">\(Y(a)\)</span> is the potential outcome under treatment <span class="math inline">\(A=a\)</span> and the variables <span class="math inline">\(M\)</span> are effect modifiers. Within medicine it is generally considered reasonable to assume the effect modifying variables <span class="math inline">\(M\)</span> are generally a subset of the history <span class="math inline">\(H\)</span>, with the dimension of <span class="math inline">\(M\)</span>, <span class="math inline">\(|M|\)</span> possible far smaller than <span class="math inline">\(|H|\)</span>. While a large numbers of factors - genetic, environmental and lifestyle - may influence whether someone develops a particular disease their impact on the effectiveness of a particular treatment may be neglible or noisy<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. Nevertheless, for simplcity of notation we will assume <span class="math inline">\(M=H\)</span> from hereon.</p>
+<p>As noted, there are several reasons we might be interested in only estimating the contrast verus the outcomes under each treatment directly. One way to think about the observed outcome Y is as being composed of two components, a <em>prognostic</em> component and a <em>predictive</em> component. The prognostic component determines an individuals likely outcome given a particular medical history, and the predictive component determines the impact of a particular treatment. We can separate the expected outcome for a patient into these components</p>
+<p><span class="math display">\[
+\begin{align}
+E[Y|A=a,H=h] &amp;= E[Y|H=h,A=0] + E[Y(a) - Y(0)|H=h] \\
+&amp;= m_0(x) + \gamma(a,h) 
+\end{align}
+\]</span></p>
+<p>where the setting <span class="math inline">\(A=0\)</span> in <span class="math inline">\(m_0\)</span> corresponds to a control or baseline case. In many cases <span class="math inline">\(m_0(h)\)</span> may be a more complex function than <span class="math inline">\(\tau(x) = \gamma(1,h)\)</span> (Hahn, Murray &amp; Carvalho (2020) <span class="citation" data-cites="hahn2020bayesian">Hahn et al. (<a href="#ref-hahn2020bayesian" role="doc-biblioref">2020</a>)</span>). The potential for misspecification or simple lack of interest (desire for more parsimonious model) in <span class="math inline">\(m_0(h)\)</span> motivates attempting to directly model <span class="math inline">\(\tau(h)\)</span>. While disinterest may sound strong, if the final model will be used in practise, and must be explainable to clinical experts, since empircally <span class="math inline">\(\tau(h)\)</span> may be sparser there may be large improvements in interpretability if we model <span class="math inline">\(\tau(h)\)</span> rather than an alternative. The parameter set of <span class="math inline">\(\tau\)</span> is <span class="math inline">\(\psi\)</span> which is what we’ll estimate with G-estimation which we turn to next.</p>
+<h1 id="a-review-independence-and-covariance">A Review: Independence and Covariance</h1>
+<p>G-estimation builds upon some basic some facts about conditional independence and covariances which we briefly review. The conditional independence of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> given <span class="math inline">\(Z\)</span> is denoted as <span class="math inline">\(X \perp Y |Z=z\)</span>. For probability densities <span class="math inline">\(p\)</span> this translates to <span class="math inline">\(p(x,y|z) = p(x|z)p(y|z)\)</span>. A direct result of this is that the conditional covariance of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> given <span class="math inline">\(Z\)</span> is equal to zero.</p>
+<p><span class="math display">\[
+\begin{align}
+\text{Cov}(X,Y|Z) &amp;= E[(X - E[X|Z])(Y - E[Y|Z])|Z] \\
+ &amp;= E[XY|Z] - E[X|Z]E[Y|Z] \\
+ &amp;= E[X|Z]E[Y|Z] - E[X|Z]E[Y|Z] \\
+ &amp;= 0
+\end{align}
+\]</span> Where the third line follows from the ability to factorise the conditional densities <span class="math inline">\(E[XY|Z] = \int \int xy p(xy|z)dxdy = \int x p(x|z) dx \int y p(y|z)dy\)</span>. We also note that 1) this holds if we replace <span class="math inline">\(X\)</span> or <span class="math inline">\(Y\)</span> by a function <span class="math inline">\(f\)</span> of <span class="math inline">\(X\)</span> or <span class="math inline">\(Y\)</span> and <span class="math inline">\(Z\)</span>, for example <span class="math inline">\(f(X,Z) = X - E(X|Z)\)</span> and 2) relatedly that <span class="math inline">\(E[X(Y - E[Y|Z])|Z] = 0\)</span>.</p>
+<h1 id="g-estimation">G-Estimation</h1>
+<p>G-estimation is an approach to determining the parameters of a SNMM. As we are modelling a treatment contrast in a situation where only one treatment is observed per individual we need a method that accounts for this missingness. There are two explanations below, the second is more general, with some repitition.</p>
+<h2 id="explanation-1-additive-rank-preservation">Explanation 1: Additive Rank Preservation</h2>
+<p>One approach to explaining G-estimation is through assuming additive rank preservation with regard to the treatment effect <span class="citation" data-cites="hernan2010causal">(Hernan and Robins <a href="#ref-hernan2010causal" role="doc-biblioref">2020</a>)</span>. Additive rank preservation is the assumption that the treatment effect is the same for everyone, that <span class="math inline">\(Y(1)-Y(0) = \psi_0\)</span>. We emphasise that this is at the individual level (see figure X). As shown later it is not a requirement for G-estimation that this assumption holds, it is expository tool.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:unnamed-chunk-2"></span>
+<img src="structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-2-1.png" alt="An illustration of rank and additive rank preservation" width="624" />
+<p class="caption">
+Figure 2: An illustration of rank and additive rank preservation
+</p>
+</div>
+</div>
+<p>Notice that for the case of additive rank preservation with no effect modification the following holds</p>
+<p><span class="math display">\[
+\begin{align}
+Y(0) &amp;= Y - A[Y(1)-Y(0)] \\
+Y(0) &amp;= Y - A\psi \\
+\end{align}
+\]</span></p>
+<p>If we call this final expression <span class="math inline">\(G(\psi) = Y - A\psi\)</span> then utilising the assumption of unconfoundedness <span class="math inline">\(Y(a) \perp A|X\)</span> this should be uncorrelated with any function <span class="math inline">\(S(A)\)</span> of the treatment assignment mechanism, conditional on the confounders <span class="math inline">\(H\)</span>. For this case of no effect modification we’ll let <span class="math inline">\(S(A) = A\)</span><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. We then have the estimating equation <span class="math inline">\(U(\psi;H,A) = \sum_{n=1}^N G_n(\psi)[A_n - E(A_n|X_n)] = 0\)</span>. For the cases where <span class="math inline">\(E(A_n|X_n)\)</span> is unknown we replace it with an estimate. This equation can then be solved for the unknown <span class="math inline">\(\psi\)</span>, giving us an approach towards estimation. We continues this case below in <strong>Example 1</strong>.</p>
+<h2 id="explanation-2-more-general-case">Explanation 2: More General Case</h2>
+<p>Now consider the more general case where <span class="math inline">\(\psi\)</span> is a vector of parameters of our SNMM <span class="math inline">\(\tau_{\psi}(h) = E(Y(1)-Y(0)|H=h)\)</span>. Our analog of <span class="math inline">\(G(\psi)\)</span> is now equal to <span class="math inline">\(Y(0)\)</span> in expectation</p>
+<p><span class="math display">\[
+\begin{align}
+E(G(\psi)|H) &amp;=E[Y - A(Y(1)-Y(0))|H] \\
+&amp;= E[Y|H] - E[A(Y(1)-Y(0))|H] \\
+ &amp;= E[AY(1) + (1-A)Y(0)|H] - E[A(Y(1)-Y(0))|H] \\
+ &amp;= E[Y(0)|H]
+\end{align}
+\]</span> Where we make use of the consistency assumption <span class="math inline">\(Y = AY(1) + (1-A)Y(0)\)</span> in going from line two to three. As a result we have the following estimating equation <span class="math inline">\(U(\tau;A_n,H_n) = \sum_{n=1}^N G_n(\psi)(S(A_n,H_n)-E[S(A_n,H_n)]) = 0\)</span> for the general case in a single stage setting which is zero in expectation <span class="math inline">\(E(U|L) = 0\)</span>. Note that we <em>could</em> mean center <span class="math inline">\(G(\psi)\)</span> which we will return to. For the case where <span class="math inline">\(\tau_{\psi}(h)\)</span> can be expressed as a linear model this can be explicity solved, we outline this case below in <strong>Example 2</strong>.</p>
+<h1 id="some-examples">Some examples</h1>
+<h2 id="example-1">Example 1</h2>
+<p>In the case of <span class="math inline">\(\tau(x) = \psi_0\)</span>, i.e. <span class="math inline">\(G(\psi_0) = Y - \psi_0A\)</span> and <span class="math inline">\(S(A) = A\)</span> we have an explicit solution</p>
+<p><span class="math display">\[
+\begin{align}
+U(\psi_0;H,A) &amp;= 0 \\
+\sum_n^N G(\psi_0) [A - E(A_n|H_n)] &amp;= 0 \\
+\sum_n^N [Y_n - \psi_0A_n] [A_n - E(A|H_n)] &amp;= 0 \\
+\psi_0 \sum_n^N A_n [A_n - E(A_n|H_n)] &amp;= \sum_n^N Y[A_n - E(A_n|H_n)] \\
+\psi_0 &amp;= \sum_n^N \frac{Y_n[A_n - E(A_n|H_n)]}{\sum_n^N A_n [A_n - E(A_n|H_n)]}
+\end{align}
+\]</span></p>
+<p>As mentioned, in observational studies where the treatment assignment mechanism is unknown we replace <span class="math inline">\(E(A|L)\)</span> (the propensity score) with it’s estimate, using e.g. logistic regression or more complex models.</p>
+<p>Let’s simulating this situation for a model of the form <span class="math inline">\(E(Y(a)|H=h,A=a) = -1.4 + 0.8h_1 + \tau_0a\)</span> where the data is confounded. We’ll compare fitting a SNMM for the parameter <span class="math inline">\(\tau_0\)</span> with fitting an linear model for the full conditional expectation. The simulation set up is adapted from Chakraborty and Moodie (2013) <span class="citation" data-cites="chakraborty2013statistical">(Chakraborty and Moodie <a href="#ref-chakraborty2013statistical" role="doc-biblioref">2013</a>)</span>. As shown in figure X both methods return similar results. This is to be expected; the advantage of g-estimation is primarily in situations where the prognostic component <span class="math inline">\(m_0(x)\)</span> is complex and we want a parsimonious model (we show this case below), and in time-varying treatment setting (in part 2).</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+## SIMULATION 1
+M &lt;- 500 # number of rins
+tauM &lt;- replicate(M, {
+  N &lt;- 100
+  # generate data
+  x &lt;- runif(N,-0.5,3)
+  ps &lt;- function(x) 1/(1 + exp(2 - 1.8*x))
+  a &lt;- 1*(ps(x) &lt; runif(N))
+  y &lt;- -1.4 + 0.8*x + 2.5*a + rnorm(N)
+  # estimate probability of treatment
+  pm &lt;- glm(a ~ x,family = binomial())
+  ph &lt;- fitted(pm)
+  w &lt;- (a-ph)
+  # estimate treatment effect
+  tauh_g &lt;- sum(w*y)/sum(a*w)
+  tauh_lm &lt;- lm(y ~ x + a)$coef[&quot;a&quot;]
+  c(tauh_g,tauh_lm)
+})</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:unnamed-chunk-4"></span>
+<img src="structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-4-1.png" alt="A comparison of OLS estimation of the outcome model E(Y|A,H) and G-estimation of the SNMM" width="624" />
+<p class="caption">
+Figure 3: A comparison of OLS estimation of the outcome model E(Y|A,H) and G-estimation of the SNMM
+</p>
+</div>
+</div>
+<h2 id="example-2">Example 2</h2>
+<p>Now consider the linear model with covariates <span class="math inline">\(\tau(h_n) = \psi_0 + \sum_{k=1}^K\psi_k h_{kn}\)</span>. The resulting empirical estimating equation is</p>
+<p><span class="math display">\[
+\begin{align}
+U(\psi;A_n,H_n) &amp;= \sum_{n=1}^{N}G(\psi)[S(A_n,H_n)-E(S(A_n,H_n)|L)] \\
+U(\psi;A_n,H_n) &amp;= \sum_{n=1}^{N}[Y_n - (\psi_0 + \sum_{k=1}^K\psi_k h_{kn})][S(A_n,H_n)-E(S(A_n,H_n)|L)] \\
+\end{align}
+\]</span></p>
+<p>As stated this appears to be a single equation with <span class="math inline">\(K+1\)</span> unknowns. However, we can take advantage of <span class="math inline">\(S(A_n,H_n)\)</span> being an arbitrary function to convert it into <span class="math inline">\(K+1\)</span> equations. If we choose <span class="math inline">\(S(A_n,H_n)\)</span> to be the vector valued function <span class="math inline">\(S(A_n,H{*n}) = (1,h_1,,...h_K)^t\cdot A_n\)</span> then we have</p>
+<p><span class="math display">\[
+\begin{align}
+U_1(\psi;A_n,H_n) &amp;= \sum_{n=1}^{N}[Y_n - (\psi_0 + \sum_{k=1}^K\psi_k x_{kn})][A_n-E(A_n|H_n)] \\
+U_2(\psi;A_n,H_n) &amp;= \sum_{n=1}^{N}[Y_n - (\psi_0 + \sum_{k=1}^K\psi_k x_{kn})][A_n-E(A_n|H_n)] h_{1n} \\
+ \dots \\
+U_K(\psi;A_n,H_n) &amp;= \sum_{n=1}^{N}[Y_n - (\psi_0 + \sum_{k=1}^K\psi_k x_{kn})][A_n-E(A_n|H_n)] h_{Kn} \\
+\end{align}
+\]</span> In order to write the above estimating equations in matrix/vector form let <span class="math inline">\(\textbf{H}\)</span> be our <span class="math inline">\(n \times (K+1)\)</span> effect modifier/confounder design matrix, <span class="math inline">\(\textbf{A} = \text{diag}(A_1,A_2,\dots,A_N)\)</span> and <span class="math inline">\(\textbf{W} = \text{diag}(A_1-E[A_1|H_1],\dots,A_N-E[A_N|H_N])\)</span>. Then our <span class="math inline">\(K+1\)</span> estimating equations in matrix/vector form are <span class="math inline">\(\textbf{U}(\psi;A_n,H_n) = \textbf{H}^t\textbf{W}(\textbf{y}-\textbf{A}\textbf{H}\boldsymbol{\psi})\)</span>. Solving for <span class="math inline">\(\boldsymbol{\psi}\)</span> gives</p>
+<p><span class="math display">\[
+\begin{align}
+\boldsymbol{\psi} &amp;= (\textbf{H}^t\textbf{W}\textbf{A}\textbf{H})^{-1}\textbf{H}^t\textbf{W}\textbf{y}
+\end{align}
+\]</span></p>
+<p>Simulating this situation, again building the settings off Chakraborty and Moodie (2013) <span class="citation" data-cites="chakraborty2013statistical">(Chakraborty and Moodie <a href="#ref-chakraborty2013statistical" role="doc-biblioref">2013</a>)</span>, we have two settings, the <span class="math inline">\(m_0\)</span> component is linear and non-linear. The treatment effect component <span class="math inline">\(\tau(h)\)</span> is always linear - we’ll come to non-linar tau next. We compare G-estimation of the SNMM with a (linear) outcome model for the full expectation <span class="math inline">\(E(Y|H,A)\)</span>. While this shows the strength of SNMM is not entirely fair as in an empirical setting a simple plot of the data would reveal that a linear model is a bad idea.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+gest_snmm &lt;- function(X,y,a,ph) {
+  w &lt;- (a-ph)
+  W &lt;- diag(w)
+  A &lt;- diag(a)
+  t1 &lt;- solve(t(X) %*% W %*% A %*% X)
+  t2 &lt;- t(X) %*% W %*% y
+  t1 %*% t2
+}</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+## SIMULATION 2
+M &lt;- 500  # number of runs
+tauM &lt;- replicate(M, {
+  # generate data for linear and non-linear cases
+  N &lt;- 100
+  x &lt;- runif(N,-0.5,3)
+  ps &lt;- function(x) 1/(1 + exp(2 - 1.8*x))
+  a &lt;- 1*(ps(x) &lt; runif(N))
+  psi0 &lt;- 2.5
+  psi1 &lt;- 1.5
+  y1 &lt;- -1.4 + 0.8*x + psi0*a + psi1*a*x + rnorm(N)
+  y2 &lt;- -1.4*x^3 + exp(x) + psi0*a + psi1*a*x + rnorm(N)
+  # estimate probability of treatment
+  pm &lt;- glm(a ~ x,family = binomial())
+  X &lt;- cbind(rep(1,N),x)
+  ph &lt;- fitted(pm)
+  # estimate treatment effect
+  g1 &lt;- as.vector(gest_snmm(X,y1,a,ph))
+  g2 &lt;- as.vector(gest_snmm(X,y2,a,ph))
+  ols1 &lt;- lm(y1 ~ x + a + x*a)$coef[c(&quot;a&quot;,&quot;x:a&quot;)]
+  ols2 &lt;- lm(y2 ~ x + a + x*a)$coef[c(&quot;a&quot;,&quot;x:a&quot;)]
+  c(g1,g2,ols1,ols2)
+})</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:unnamed-chunk-7"></span>
+<img src="structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-7-1.png" alt="A comparison of OLS estimation of the outcome model E(Y|A,H) and G-estimation of the SNMM for a linear outcome model." width="624" />
+<p class="caption">
+Figure 4: A comparison of OLS estimation of the outcome model E(Y|A,H) and G-estimation of the SNMM for a linear outcome model.
+</p>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:unnamed-chunk-8"></span>
+<img src="structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-8-1.png" alt="A comparison of OLS estimation of the outcome model E(Y|A,H) and G-estimation of the SNMM for a non-linear outcome model." width="624" />
+<p class="caption">
+Figure 5: A comparison of OLS estimation of the outcome model E(Y|A,H) and G-estimation of the SNMM for a non-linear outcome model.
+</p>
+</div>
+</div>
+<h1 id="standard-errors-and-confidence-intervals">Standard errors and confidence intervals</h1>
+<p>Quantifying uncertainty in our parameter estimates is important. For g-estimation of SNMMs the non-parametric bootstrap offers a general approach to estimation of standard errors. If we are interested in a statistic <span class="math inline">\(T(F)\)</span> (e.g. the parameters of a linear model), that can be expressed as a function of the distribtuion of the data <span class="math inline">\(F\)</span> the non-parametric bootstrap repeatedly samples from the empirical distribution <span class="math inline">\(\hat{F}_n\)</span>, and calculates <span class="math inline">\(T(\hat{F}_N)\)</span>. Given <span class="math inline">\(\hat{F}_N \stackrel{\text{dist}}{\to} F\)</span> as <span class="math inline">\(N \to \infty\)</span> justifies this. In practise this involves repeatedly (e.g. <span class="math inline">\(M=1000\)</span> times) taking a sample of size <span class="math inline">\(n\)</span> with replacement from the observed data <span class="math inline">\(X\)</span> and fitting our model of interest. As we are interested in the distribution of <span class="math inline">\(Y(1)-Y(0)\)</span> we should be careful in the case of an imbalance in the treatment group sizes to resample within each treatment group.</p>
+<h1 id="more-efficient-g-estimation">More efficient G-estimation</h1>
+<p>Returning to the idea that setting <span class="math inline">\(U(\psi) = 0\)</span> follows from <span class="math inline">\(\text{Cov}(Y(0),S(A,H)|H) = 0\)</span>, it turns out there is a more efficient form of g-estimation if we take full advantage of this idea. Efficient means….</p>
+<p>Above we use an emprical version of <span class="math inline">\(E(Y(0)(A-S(A|H))|H)=0\)</span> as out estimating equation. That is because we don’t know <span class="math inline">\(E(Y(0)|H)\)</span>. However, we can estimate it; to do this fit a model and use it to predict <span class="math inline">\(\hat{m}_0(h) = E(Y(0)|H)\)</span> for all observations. Then rather than using <span class="math inline">\(y\)</span> in our estimation procedures we use <span class="math inline">\(\tilde{y} = y-\hat{m}_0(h)\)</span>. The need to estimate several models before G-estimation may seem to add the number of possible sources of error however it actually has the opposite impact. This approach is doubly robust, meaning that if either x or y are correctly specified then the estimated causal effect is unbiased. Correct specification refers to the function form of the model, e.g. aspects such as linear/non-linear effects and interactions. Failure to include confounders would lead to bias even if the model was “correct” for the measured confounders. For our linear model, with m being, the doubly robust estimate is</p>
+<p><span class="math display">\[
+\begin{align}
+\hat{\boldsymbol{\psi}}_e &amp;= (\textbf{H}^t\textbf{W}\textbf{A}\textbf{H})^{-1}\textbf{H}^t\textbf{W}(\textbf{y}-\hat{m}_0)
+\end{align}
+\]</span></p>
+<p>What is the intuition behind this? We can think of it as information simplification - by taking out <span class="math inline">\(m_0(h)\)</span> we are allowing the estimation to focus on changes with <span class="math inline">\(H\)</span> for <span class="math inline">\(A=0\)</span> is informative about what variation is not due to the treatment effect. Generally noise reduction <span class="math inline">\(\rightarrow\)</span> signal enhancement. For a more detailed argument see Athey and Imbens <span class="citation" data-cites="athey2019generalized">(Athey et al. <a href="#ref-athey2019generalized" role="doc-biblioref">2019</a>)</span> or Nie and Wager <span class="citation" data-cites="nie2017quasi">(Nie and Wager <a href="#ref-nie2017quasi" role="doc-biblioref">2017</a>)</span>. We can still use our avoid function <code>gest_snmm</code> for efficient g-estimation, but rather than passing in the actual y we pass in <span class="math inline">\(\tilde{y} = y - E(Y|A=0,H=h)\)</span> which we can estimate using an approach of choice.</p>
+<h1 id="non-linear-effect-modification">Non-linear effect modification</h1>
+<p>So far we have talked about and simulated linear <span class="math inline">\(\tau(h)\)</span>, but what if the effect modification is non-linear? Restricting ourselves to linear models in the age of machine learning seems so uncool. I’ll add that many of the ideas underlying g-estimation and snmm come up in gradient trees (Athey <span class="citation" data-cites="athey2019generalized">Athey et al. (<a href="#ref-athey2019generalized" role="doc-biblioref">2019</a>)</span>) or R-learning (Nie &amp; Wager <span class="citation" data-cites="nie2017quasi">Nie and Wager (<a href="#ref-nie2017quasi" role="doc-biblioref">2017</a>)</span>). As a first step towards non-linear models for <span class="math inline">\(\tau\)</span> we’ll consider approaches that involve transformations of the design matrix <span class="math inline">\(H\)</span> (the matrix containing our effect modifiers and generally a vector of 1s for the main (first order) effect of treatment). So we have a transformation <span class="math inline">\(\Phi: \mathbb{R}^{n \times p} \to \mathbb{R}^{n \times q}\)</span>, including methods such as the Fourier transform, polynomial expanstions, spline basis matrices. We then replace <span class="math inline">\(X\)</span> with <span class="math inline">\(\Phi(H)\)</span> in our estimation procedure</p>
+<p><span class="math display">\[
+\begin{align}
+\hat{\boldsymbol{\psi}}_e &amp;= (\boldsymbol{\Phi}^t\textbf{W}\textbf{A}\boldsymbol{\Phi})^{-1}\boldsymbol{\Phi}^t\textbf{W}(\textbf{y}-\hat{m}_0)
+\end{align}
+\]</span></p>
+<p>To illustrate this, lets do another simulation. In this case <span class="math inline">\(\tau\)</span> is non-linear. We have increased the number of variables to two (clearly the simulations should not be relied upon).</p>
+<p>For this simulation I’ve increased the sample size to <span class="math inline">\(N=1000\)</span>.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+## SIMULATION 3
+M &lt;- 500  # number of runs
+tauM &lt;- replicate(M, {
+  # generate data
+  N &lt;- 1000
+  x1 &lt;- runif(N,-0.5,3)
+  x2 &lt;- rnorm(N,2,3)
+  ps &lt;- function(x1,x2) 1/(1 + exp(2 - 1.8*x1 + 0.2*x2))
+  a &lt;- 1*(ps(x1,x2) &lt; runif(N))
+  psi0 &lt;- 2.5
+  psi1 &lt;- 1.5
+  tau &lt;- psi0 + 0.7*exp(x1) + 0.5*x2 + 0.4*x2^2 + rnorm(N)
+  y &lt;- 1.2*x2 - 1.4*x2^2 + 0.8*exp(x1) + a*tau + rnorm(N,sd = 3)
+  # estimate probability of treatment
+  pm &lt;- glm(a ~ x1 + x2,family = binomial())
+  Xs &lt;-  cbind(rep(1,N),bs(x1),bs(x2))
+  ph &lt;- fitted(pm)
+  # estimate treatment effect
+  ols &lt;- lm(y ~ bs(x1) + bs(x2) + a + bs(x1)*a + bs(x2)*a)
+  df0 &lt;- data.frame(x1,x2,a=0)
+  df1 &lt;- data.frame(x1,x2,a=1)
+  tau_ols &lt;- predict(ols,df1) - predict(ols,df0)
+  g &lt;- gest_snmm(Xs,y - predict(ols,df0),a,ph)
+  tau_g &lt;- as.vector(Xs %*% g)
+  c(bias_g=mean((tau_g-tau)),
+    bias_l=(mean((tau_ols-tau))),
+    mse_g=mean((tau_g-tau)^2),
+    mse_l=(mean((tau_ols-tau)^2)))
+})</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:unnamed-chunk-10"></span>
+<img src="structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-10-1.png" alt="Average bias of individual treatment effect" width="624" />
+<p class="caption">
+Figure 6: Average bias of individual treatment effect
+</p>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:unnamed-chunk-11"></span>
+<img src="structural-nested-mean-models-and-g-estimation_files/figure-html5/unnamed-chunk-11-1.png" alt="Average meas square error of individual treatment effect" width="624" />
+<p class="caption">
+Figure 7: Average meas square error of individual treatment effect
+</p>
+</div>
+</div>
+<h1 id="conclusion-and-up-next">Conclusion and up-next</h1>
+<p>We’ve done an overview of SNMM and G-estimation focusing on the single stage setting. While the models are not often used in practise according to XXX. I hope this shows that they are a good . We have largely dealt with simplistic situations to emphasise the fundamentals of the methods. G-estimation is based on setting an empirical covariance equal to zero building off the assumptions from causal inference - ignorability/unconfoundedess, consistency and positivity. As mentioned at the beginning there is much more to causal inference than the methods and often subject matter knowledge plays an important role in justifying the reasonableness of these assumptions and designing the dat collection/extraction process.</p>
+<p>There are several things we haven’t covered in this tour of SNMM and G-estimation:</p>
+<ul>
+<li>Non-continous outcomes - in particular binary outcomes</li>
+<li>More than point estimates - quantiles or distributions</li>
+<li>Treatment over time</li>
+<li>Simulations that really test SNMM (or it’s competitors) in the complex and noisy datasets common in data science practise</li>
+</ul>
+<p>We’ll come back to these topics, in particular Treatment over time in subsequent posts. Thanks for reading.</p>
+<div id="refs" class="references hanging-indent" role="doc-bibliography">
+<div id="ref-ahern2018start">
+<p>Ahern, Jennifer. 2018. “Start with the ’c-Word,’ Follow the Roadmap for Causal Inference.” American Public Health Association.</p>
+</div>
+<div id="ref-athey2019generalized">
+<p>Athey, Susan, Julie Tibshirani, Stefan Wager, and others. 2019. “Generalized Random Forests.” <em>The Annals of Statistics</em> 47 (2): 1148–78.</p>
+</div>
+<div id="ref-chakraborty2013statistical">
+<p>Chakraborty, Bibhas, and Erica EM Moodie. 2013. <em>Statistical Methods for Dynamic Treatment Regimes: Reinforcement Learning, Causal Inference, and Personalized Medicine</em>. Springer.</p>
+</div>
+<div id="ref-hahn2020bayesian">
+<p>Hahn, P Richard, Jared S Murray, Carlos M Carvalho, and others. 2020. “Bayesian Regression Tree Models for Causal Inference: Regularization, Confounding, and Heterogeneous Effects.” <em>Bayesian Analysis</em>.</p>
+</div>
+<div id="ref-hernan2010causal">
+<p>Hernan, Miguel A, and James M Robins. 2020. “Causal Inference: What If?” Boca Raton: Chapman &amp; Hall/CRC;</p>
+</div>
+<div id="ref-holland1986statistics">
+<p>Holland, Paul W. 1986. “Statistics and Causal Inference.” <em>Journal of the American Statistical Association</em> 81 (396): 945–60.</p>
+</div>
+<div id="ref-nie2017quasi">
+<p>Nie, Xinkun, and Stefan Wager. 2017. “Quasi-Oracle Estimation of Heterogeneous Treatment Effects.” <em>arXiv Preprint arXiv:1712.04912</em>.</p>
+</div>
+<div id="ref-pearl2009causal">
+<p>Pearl, Judea, and others. 2009. “Causal Inference in Statistics: An Overview.” <em>Statistics Surveys</em> 3: 96–146.</p>
+</div>
+<div id="ref-robins1986new">
+<p>Robins, James. 1986. “A New Approach to Causal Inference in Mortality Studies with a Sustained Exposure Period—Application to Control of the Healthy Worker Survivor Effect.” <em>Mathematical Modelling</em> 7 (9-12): 1393–1512.</p>
+</div>
+<div id="ref-robins1992g">
+<p>Robins, James M, Donald Blevins, Grant Ritter, and Michael Wulfsohn. 1992. “G-Estimation of the Effect of Prophylaxis Therapy for Pneumocystis Carinii Pneumonia on the Survival of Aids Patients.” <em>Epidemiology</em>, 319–36.</p>
+</div>
+<div id="ref-robins2000marginal">
+<p>Robins, James M, Miguel Angel Hernan, and Babette Brumback. 2000. “Marginal Structural Models and Causal Inference in Epidemiology.” LWW.</p>
+</div>
+<div id="ref-williamson2019effect">
+<p>Williamson, Jeff D, Nicholas M Pajewski, Alexander P Auchus, R Nick Bryan, Gordon Chelune, Alfred K Cheung, Maryjo L Cleveland, et al. 2019. “Effect of Intensive Vs Standard Blood Pressure Control on Probable Dementia: A Randomized Clinical Trial.” <em>Jama</em> 321 (6): 553–61.</p>
+</div>
+</div>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>hence Pearl’s <em>do</em> notation <span class="citation" data-cites="pearl2009causal">(Pearl and others <a href="#ref-pearl2009causal" role="doc-biblioref">2009</a>)</span><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>where there is treatment confounder feedback<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p>effect modification is a higher order effect<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4" role="doc-endnote"><p>We’ll return to choice of <span class="math inline">\(S\)</span> later<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom"></div>
+<script id="distill-bibliography" type="text/bibtex">
+@article{robins1986new,
+  title={A new approach to causal inference in mortality studies with a sustained exposure periodâ€”application to control of the healthy worker survivor effect},
+  author={Robins, James},
+  journal={Mathematical modelling},
+  volume={7},
+  number={9-12},
+  pages={1393--1512},
+  year={1986},
+  publisher={Elsevier}
+}
+
+
+@misc{robins2000marginal,
+  title={Marginal structural models and causal inference in epidemiology},
+  author={Robins, James M and Hernan, Miguel Angel and Brumback, Babette},
+  year={2000},
+  publisher={LWW}
+}
+
+@article{robins1992g,
+  title={G-estimation of the effect of prophylaxis therapy for Pneumocystis carinii pneumonia on the survival of AIDS patients},
+  author={Robins, James M and Blevins, Donald and Ritter, Grant and Wulfsohn, Michael},
+  journal={Epidemiology},
+  pages={319--336},
+  year={1992},
+  publisher={JSTOR}
+}
+
+@book{chakraborty2013statistical,
+  title={Statistical methods for dynamic treatment regimes: Reinforcement Learning, Causal Inference, and Personalized Medicine},
+  author={Chakraborty, Bibhas and Moodie, Erica EM},
+  year={2013},
+  publisher={Springer}
+}
+
+@article{vansteelandt2014structural,
+  title={Structural nested models and G-estimation: the partially realized promise},
+  author={Vansteelandt, Stijn and Joffe, Marshall and others},
+  journal={Statistical Science},
+  volume={29},
+  number={4},
+  pages={707--731},
+  year={2014},
+  publisher={Institute of Mathematical Statistics}
+}
+
+@article{williamson2019effect,
+  title={Effect of intensive vs standard blood pressure control on probable dementia: a randomized clinical trial},
+  author={Williamson, Jeff D and Pajewski, Nicholas M and Auchus, Alexander P and Bryan, R Nick and Chelune, Gordon and Cheung, Alfred K and Cleveland, Maryjo L and Coker, Laura H and Crowe, Michael G and Cushman, William C and others},
+  journal={Jama},
+  volume={321},
+  number={6},
+  pages={553--561},
+  year={2019},
+  publisher={American Medical Association}
+}
+
+@article{holland1986statistics,
+  title={Statistics and causal inference},
+  author={Holland, Paul W},
+  journal={Journal of the American statistical Association},
+  volume={81},
+  number={396},
+  pages={945--960},
+  year={1986},
+  publisher={Taylor \& Francis}
+}
+
+@article{pearl2009causal,
+  title={Causal inference in statistics: An overview},
+  author={Pearl, Judea and others},
+  journal={Statistics surveys},
+  volume={3},
+  pages={96--146},
+  year={2009},
+  publisher={The author, under a Creative Commons Attribution License}
+}
+
+@misc{ahern2018start,
+  title={Start with the 'C-Word,' follow the roadmap for causal inference},
+  author={Ahern, Jennifer},
+  year={2018},
+  publisher={American Public Health Association}
+}
+
+@misc{hernan2010causal,
+  title={Causal inference: What if?},
+  author={Hernan, Miguel A and Robins, James M},
+  year={2020},
+  publisher={Boca Raton: Chapman & Hall/CRC;}
+}
+
+@article{athey2019generalized,
+  title={Generalized random forests},
+  author={Athey, Susan and Tibshirani, Julie and Wager, Stefan and others},
+  journal={The Annals of Statistics},
+  volume={47},
+  number={2},
+  pages={1148--1178},
+  year={2019},
+  publisher={Institute of Mathematical Statistics}
+}
+
+@article{nie2017quasi,
+  title={Quasi-oracle estimation of heterogeneous treatment effects},
+  author={Nie, Xinkun and Wager, Stefan},
+  journal={arXiv preprint arXiv:1712.04912},
+  year={2017}
+}
+
+@article{hahn2020bayesian,
+  title={Bayesian regression tree models for causal inference: regularization, confounding, and heterogeneous effects},
+  author={Hahn, P Richard and Murray, Jared S and Carvalho, Carlos M and others},
+  journal={Bayesian Analysis},
+  year={2020},
+  publisher={International Society for Bayesian Analysis}
+}
+
+@article{athey2019generalized,
+  title={Generalized random forests},
+  author={Athey, Susan and Tibshirani, Julie and Wager, Stefan and others},
+  journal={The Annals of Statistics},
+  volume={47},
+  number={2},
+  pages={1148--1178},
+  year={2019},
+  publisher={Institute of Mathematical Statistics}
+}
+</script>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

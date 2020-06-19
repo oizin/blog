@@ -9,7 +9,6 @@ output:
   distill::distill_article:
     self_contained: false
 bibliography: biblio.bib
-draft: true
 ---
 
 ```{r setup, include=FALSE}
