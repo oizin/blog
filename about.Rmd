@@ -1,7 +1,9 @@
 ---
 title: "About this blog"
 description: |
-  Coming soon...
+  This blog is written by me, Oisín Fitzgerald. 
+  
+  I'm currently a PhD candidate at the Centre for Big Data Research in Health, at UNSW Sydney. 
 ---
 
 ```{r setup, include=FALSE}

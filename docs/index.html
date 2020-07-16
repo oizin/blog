@@ -1260,8 +1260,38 @@
   <script src="site_libs/webcomponents-2.0.0/webcomponents.js"></script>
   <script src="site_libs/distill-2.2.21/template.v2.js"></script>
   <!--radix_placeholder_site_in_header-->
+  <style type="text/css">
+  .distill-site-nav {
+    color: rgba(255, 255, 255, 0.8);
+    background-color: #1f78b4;
+    font-size: 20px;
+    font-weight: 300;
+  }
+
+  .distill-site-nav a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .distill-site-nav a:hover {
+    color: white;
+  }
+
+  .distill-site-header {
+  }
+
+  .distill-site-footer {
+  }
+
+  @media print {
+    .distill-site-nav {
+      display: none;
+    }
+  }
+  </style>
   <!--/radix_placeholder_site_in_header-->
 
+  <link rel="stylesheet" href="styles.css" type="text/css"/>
 
 </head>
 
@@ -1613,14 +1643,18 @@ function init_posts_list() {
 <a href="posts/2020-05-12-structural-nested-mean-models-and-g-estimation/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":[]}</script>
 <div class="metadata">
-<div class="publishedDate">June 21, 2020</div>
+<div class="publishedDate">July 15, 2020</div>
 </div>
 <div class="thumbnail">
 <img data-src="posts/2020-05-12-structural-nested-mean-models-and-g-estimation/confounding_v2.png"/>
 </div>
 <div class="description">
 <h2>Structural Nested Mean Models and G-Estimation: Part I</h2>
-<p>An introduction to structural nested mean models for causal inference</p>
+<p>Structural nested mean models are an important method for causal inference in settings with time-varyings treatments.
+They model the difference between two treatment regimes and naturally incorporate effect modification, making them a 
+useful option in studies investigating personalised approaches to medical treatment.
+In this post, we'll introduce the basics of structural nested mean models, and the associated method of G-estimation 
+in a single decision setting.</p>
 </div>
 </a>
 </div>
@@ -1628,7 +1662,7 @@ function init_posts_list() {
 <a href="#">More articles &raquo;</a>
 </div>
 </div>
-<!--/radix_placeholder_article_listing-->
+<!--/radix_placeholder_article_listing-->
 
 <div class="d-title">
 <h1>Posts</h1>

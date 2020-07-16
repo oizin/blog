@@ -1,0 +1,33 @@
+---
+title: "What is the basic reproduction number? The early stages of an epidemic"
+description: |
+  A short description of the post.
+author:
+  - name: Oisin Fitzgerald
+    url: {}
+date: 06-23-2020
+output:
+  distill::distill_article:
+    self_contained: false
+draft: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(JuliaCall)
+```
+
+# Plan
+
+* generational basis (branching process)
+* final size
+
+
+# What is R~0~?
+
+Based off the book Mathematical Tools for Understanding Infectious Disease Dynamics by Odo Diekmann, Hans Heesterbeek and Tom Britton
+
+```{julia}
+a = sqrt(2)
+```

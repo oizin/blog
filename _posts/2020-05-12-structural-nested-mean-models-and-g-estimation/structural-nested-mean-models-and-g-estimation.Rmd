@@ -1,9 +1,13 @@
 ---
 title: "Structural Nested Mean Models and G-Estimation: Part I"
 description: |
-  An introduction to structural nested mean models for causal inference
+  Structural nested mean models are an important method for causal inference in settings with time-varyings treatments.
+  They model the difference between two treatment regimes and naturally incorporate effect modification, making them a 
+  useful option in studies investigating personalised approaches to medical treatment.
+  In this post, we'll introduce the basics of structural nested mean models, and the associated method of G-estimation 
+  in a single decision setting. 
 author:
-  - name: Oisin Fitzgerald
+  - name: Oisín Fitzgerald
     url: 
 output:
   distill::distill_article:
@@ -24,11 +28,11 @@ library(splines)
 
 ## What problem are we solving?   
 
-Causal inference considers questions such as: what would be the impact of giving someone a particular drug? There is a sense of action in a causal question, we are going to **do** something^[hence Pearl's *do* notation [@pearl2009causal]]. An associational question on the other hand, would ask: what is the most likely outcome of someone who is receiving a particular drug? It is passive (but still useful - e.g. predictive modelling). It is generally not the case that the answers to causal and associational questions will be the same, they can even lead to seemingly conflicting results. Most medical research asks a causal question; we wish to inform decisions. It is important we use the appropriate causal methods and thinking to answer the causal, rather than associational question (see Hernan & Robins @hernan2010causal for an in-depth treatment of this issue). There are many important considerations in answering causal questions from whether the question is worth answering, to what data needs to be collected (see Ahern @ahern2018start for a good outline). This post considers arguably the least important aspect - the statistical methodology used to estimate the causal model parameters. I'll outline (as I poorly understand it) G-estimation of *structural nested mean models (SNMM)* for a single timepoint and two treatment options, and show some simulations along the way. First a brief review of the potential outcomes framework, those familiar with it can skip to the next section.
+Causal inference considers questions such as: what would be the impact of giving someone a particular drug? There is a sense of action in a causal question, we are going to **do** something^[hence Pearl's *do* notation [@pearl2009causal]]. An associational question on the other hand, would ask: what is the most likely outcome of someone who is receiving a particular drug? It is passive (but still useful - e.g. predictive modelling). It is generally not the case that the answers to causal and associational questions will be the same, they can even lead to seemingly conflicting results. Most medical research asks a causal question; we wish to inform decisions. It is important we use the appropriate causal methods and thinking to answer the causal, rather than associational question (see Hernan & Robins @hernan2010causal for an in-depth treatment of this issue). There are many important considerations in answering causal questions from whether the question is worth answering, to what data needs to be collected (see Ahern @ahern2018start for a good outline). This post considers arguably the least important aspect - the statistical methodology used to estimate the causal model parameters. I'll outline (as I poorly understand it) G-estimation of *structural nested mean models (SNMM)* for a single timepoint and two treatment options, and show some simulations using R [@rcore] along the way. First a brief review of the potential outcomes framework, those familiar with it can skip to the next section.
 
 ## Potential outcomes framework
 
-Within the potential outcomes framework causal inference becomes a missing data problem. For the case of two treatment levels $A \in \{0,1\}$ there are two potential outcomes $Y(1)$ and $Y(0)$. If someone gets $A=0$ then the observed outcome is $Y=Y(0)$ (referred to as consistency), and $Y(1)$ is the *counterfactual*. That we only observe one potential outcome per person at a given time is referred to as the *fundamental problem of causal inference* [@holland1986statistics]. Our focus in this article will be calculating the conditional average treatment effect (CATE) $\tau(x) = E(Y(1)-Y(0)|X=x)$ where $X$ is a vector of effect modifiers.
+Within the potential outcomes framework causal inference becomes a missing data problem. For the case of two treatment levels $A \in \{0,1\}$ there are two potential outcomes $Y(1)$ and $Y(0)$. If someone gets $A=0$ then the observed outcome is $Y=Y(0)$ (referred to as consistency), and $Y(1)$ is the *counterfactual*. That we only observe one potential outcome per person at a given time is referred to as the *fundamental problem of causal inference* [@holland1986statistics]. Our focus in this article will be calculating the conditional average treatment effect (CATE) $\tau(h) = E(Y(1)-Y(0)|H=h)$ where $H$ is a vector of effect modifiers.
 
 To answer causal questions in a given dataset we require knowledge (or must make assumptions about) about the data generating process - in particular aspects of the treatment decision process (why did the clinical give patient A a particular drug?) and the outcome process (what is it about patient A that increases their risk of a particular outcome?). This knowledge allows us assess whether we can assume conditional exchangeability (unconfoundedness)
 
@@ -60,9 +64,17 @@ Not all statistical approaches that work for treatment comparison at a single ti
 
 # Structural Nested Mean Models
 
-Assume we observe a dataset $Z = (H,Y,A)$ where $H$ is the patient history (covariates; e.g. blood pressure), $Y$ is the outcome of interest and $A$ is the treatment indicator. In the single timepoint setting SNMMs involves fitting a model for the CATE $\tau(x) = E[Y(1)-Y(0)|X=x]$ where $Y(a)$ is the potential outcome under treatment $A=a$ and the variables $X$ are effect modifiers. Within medicine it is generally considered reasonable to assume the effect modifying variables $X$ are generally a subset of the history $H$, with the dimension of $X$, $|X|$ possible far smaller than $|H|$. While a large numbers of factors - genetic, environmental and lifestyle - may influence whether someone develops a particular disease their impact on the effectiveness of a particular treatment may be neglible or noisy^[effect modification is a higher order effect] in finite sample. Nevertheless, for simplcity of notation we will assume $X=H$ from hereon.
+Structural nested mean models (SNMMs) are models for the contrast (mean difference) of two treatment regimes. This difference can be conditional on a set of effect modifying covariates. The term 'structural' indicates that they are causal models, and in a longitudinal setting the model takes a 'nested' form. Assume we observe a dataset $Z = (H,Y,A)$ where $H$ is a random variable indicating a patient history (covariates; e.g. blood pressure), $h_n$ is a realisation of $H_n$ for individual $n \in \{1,...,N\}$, $Y$ is the outcome of interest and $A$ is the treatment indicator. In the single timepoint setting SNMMs involves fitting a model for the CATE 
 
-There are several reasons we might be interested in only estimating the ctreatment ontrast versus the outcome model $E(Y(a)|H=h,A=a)$ under each treatment directly. One way to think about the observed outcome $Y$ is as being composed of two components, a *prognostic* component and a *predictive* component. The prognostic component determines an individuals likely outcome given a particular medical history, and the predictive component determines the impact of a particular treatment. We can separate the expected outcome for a patient into these components
+$$\tau(h) = E[Y(1)-Y(0)|H=h]$$ 
+
+where $Y(a)$ is the potential outcome under treatment $A=a$ and the variables $X$ are effect modifiers. In particular we will discuss linear single timepoint SNMMs, where $h_n$ indicates a individual patients treatment history and $\phi$ a possible transformation of the original data (e.g. spline) resulting in a vector $\phi(h_n)$ of length $J$
+
+$$\tau(h_n) = \sum_{j=1}^J \alpha_j \phi(h_n)$$
+
+Within medicine it is generally considered reasonable to assume the effect modifying variables $H'$ are generally a subset of the history $H$, with the dimension of $H'$, $|H'|$ possible far smaller than $|H|$. While a large numbers of factors - genetic, environmental and lifestyle - may influence whether someone develops a particular disease their impact on the effectiveness of a particular treatment may be neglible or noisy^[effect modification is a higher order effect] in finite sample. Nevertheless, for simplcity of notation we will assume $H'=H$ from hereon.
+
+There are several reasons we might be interested in only estimating the treatment contrast versus the outcome model $E(Y(a)|H=h,A=a)$ under each treatment directly. One way to think about the observed outcome $Y$ is as being composed of two components, a *prognostic* component and a *predictive* component. The prognostic component determines an individuals likely outcome given a particular medical history, and the predictive component determines the impact of a particular treatment. We can separate the expected outcome for a patient into these components
 
 $$
 \begin{align}
@@ -93,38 +105,10 @@ G-estimation is an approach to determining the parameters of a SNMM. As we are m
 
 ## Explanation 1: Additive Rank Preservation
 
-One approach to explaining G-estimation is through assuming additive rank preservation with regard to the treatment effect [@hernan2010causal]. Additive rank preservation is the assumption that the treatment effect is the same for everyone, that $Y(1)-Y(0) = \psi_0$. We emphasise that this is at the individual level (see figure X). As shown later it is not a requirement for G-estimation that this assumption holds, it is expository tool.
+One approach to explaining G-estimation is through assuming additive rank preservation with regard to the treatment effect [@hernan2010causal]. Additive rank preservation is the assumption that the treatment effect is the same for everyone, that $Y(1)-Y(0) = \psi_0$. We emphasise that this is at the individual level (see figure 2). As shown later it is not a requirement for G-estimation that this assumption holds, it is expository tool.
 
-```{r,fig.cap="An illustration of rank and additive rank preservation"}
-# rank preservations
-y0 <- runif(10)
-y1r <- exp(0.2*y0)
-# additive rank preservation
-y1a <- y0 + 0.3
-
-# prepare data
-df <- data.frame(yr = c(y0,y1r),
-           ya = c(y0,y1a),
-           a = c(rep(0,10),rep(1,10)))
-df$group <- rep(1:10,2)
-
-p1 <- ggplot(df) +
-  geom_point(aes(y=a,x=yr)) +
-  geom_line(aes(y=a,x=yr,group=group)) +
-  labs(title = "Rank preservation",x = "Y(a)",
-       y = "A") + 
-  scale_y_continuous(breaks = c(0,1),
-                     minor_breaks = NULL) +
-  theme_bw()
-p2 <- ggplot(df) +
-  geom_point(aes(y=a,x=ya)) +
-  geom_line(aes(y=a,x=ya,group=group))+
-  labs(title = "Additive rank preservation",x = "Y(a)",
-       y = "A")+
-  theme_bw()+ 
-  scale_y_continuous(breaks = c(0,1),
-                     minor_breaks = NULL)
-grid.arrange(p1,p2)
+```{r,fig.cap="Illustration of additive and nonadditive rank preservation"}
+knitr::include_graphics("rankpreservation_v2.png")
 ```
 
 Notice that for the case of additive rank preservation with no effect modification the following holds
@@ -136,7 +120,7 @@ Y(0) &= Y - A\psi \\
 \end{align}
 $$
 
-If we call this final expression $G(\psi) = Y - A\psi$ then utilising the assumption of unconfoundedness $Y(a) \perp A|X$ this should be uncorrelated with any function $S(A)$ of the treatment assignment mechanism, conditional on the confounders $H$. For this case of no effect modification we'll let $S(A) = A$^[We'll return to choice of $S$ later]. We then have the estimating equation $U(\psi;H,A) = \sum_{n=1}^N G_n(\psi)[A_n - E(A_n|X_n)] = 0$. For the cases where $E(A_n|X_n)$ is unknown we replace it with an estimate. This equation can then be solved for the unknown $\psi$, giving us an approach towards estimation. We continues this case below in **Example 1**.
+If we call this final expression $G(\psi) = Y - A\psi$ then utilising the assumption of unconfoundedness $Y(a) \perp A|H=h$ this should be uncorrelated with any function $S(A)$ of the treatment assignment mechanism, conditional on the confounders $H$. For this case of no effect modification we'll let $S(A) = A$^[We'll return to choice of $S$ later]. We then have the estimating equation $U(\psi;H,A) = \sum_{n=1}^N G_n(\psi)[A_n - E(A_n|X_n)] = 0$. For the cases where $E(A_n|H_n = h_n)$ is unknown we replace it with an estimate. This equation can then be solved for the unknown $\psi$, giving us an approach towards estimation. We continues this case below in **Example 1**.
 
 ## Explanation 2: More General Case
 
@@ -162,16 +146,25 @@ In the case of $\tau(h) = \psi_0$ (the average treatment effect (ATE)), i.e. $G(
 $$
 \begin{align}
 U(\psi_0;H,A) &= 0 \\
-\sum_n^N G(\psi_0) [A - E(A_n|H_n)] &= 0 \\
-\sum_n^N [Y_n - \psi_0A_n] [A_n - E(A|H_n)] &= 0 \\
-\psi_0 \sum_n^N A_n [A_n - E(A_n|H_n)] &= \sum_n^N Y[A_n - E(A_n|H_n)] \\
-\psi_0 &= \sum_n^N \frac{Y_n[A_n - E(A_n|H_n)]}{\sum_n^N A_n [A_n - E(A_n|H_n)]}
+\sum_n^N G(\psi_0) [A - E(A_n|H_n=h_n)] &= 0 \\
+\sum_n^N [Y_n - \psi_0A_n] [A_n - E(A|H_n)] &= 0 \\ 
+\psi_0 = \sum_n^N \frac{Y_n[A_n - \pi(h_n)]}{\sum_n^N A_n [A_n - \pi(h_n)]}
 \end{align}
 $$
 
-As mentioned, in observational studies where the treatment assignment mechanism is unknown we replace $E(A|L)$ (the propensity score) with an estimate, using e.g. logistic regression or more complex models.
+As mentioned, in observational studies where the treatment assignment mechanism is unknown we replace $\pi(h_n) = E(A|H_n=h_n)$ (the propensity score) with an estimate, using e.g. logistic regression or more complex models.
 
-Let's simulating this situation for a model of the form $E(Y(a)|H=h,A=a) = -1.4 + 0.8h_1 + \tau_0a$ where observations with larger values of $H_1$ are more likely to be treated. We'll compare fitting a SNMM for the parameter $\tau_0$ with fitting an linear model for the full conditional expectation. The simulation set up is adapted from Chakraborty and Moodie (2013) [@chakraborty2013statistical]. As shown in figure 2 both methods return similar results. This is to be expected; the advantage of SNMMs and G-estimation is primarily in situations where the prognostic component $m_0(x)$ is complex and we want a parsimonious model (we show this case below), and in time-varying treatment setting (in part 2).
+Let's simulating this situation for a data generating model of the form 
+
+$$
+\underline{\text{Simulation 1 settings}} \\
+E(Y(a)|H_1=h_1,A=a) = -1.4 + 0.8h_1 + \tau_0a + \epsilon \\
+\tau_0 = 2.5\\
+\epsilon \sim \text{Normal}(0,1) \\
+H_1 \sim \text{Uniform}(-0.5,3.0)\\
+P(A=1|H_1=h_1) = (1 + \text{exp}(2 - 1.8h_1)^{-1}\\
+$$
+Notice observations with larger values of $H_1$ are more likely to be treated. We'll compare fitting a SNMM for the parameter $\tau_0$ with fitting an linear model for the full conditional expectation. The simulation set up is adapted from Chakraborty and Moodie (2013) [@chakraborty2013statistical]. As shown in figure 3 both methods return similar results. This is to be expected; the advantage of SNMMs and G-estimation is primarily in situations where the prognostic component $m_0(h)$ is complex and we want a parsimonious model (we show this case below), and in time-varying treatment setting (in part 2).
 
 ```{r echo=TRUE}
 ## SIMULATION 1
@@ -223,13 +216,13 @@ Here we have replaced $S(A_n)$ with $S(A_n,H_n)$ which changes nothing as $H_n$ 
 
 $$
 \begin{align}
-U_1(\psi;A_n,H_n) &= \sum_{n=1}^{N}[Y_n - (\psi_0 + \sum_{k=1}^K\psi_k x_{kn})][A_n-E(A_n|H_n)] \\
-U_2(\psi;A_n,H_n) &= \sum_{n=1}^{N}[Y_n - (\psi_0 + \sum_{k=1}^K\psi_k x_{kn})][A_n-E(A_n|H_n)] h_{1n} \\
+U_1(\psi;A_n,H_n) &= \sum_{n=1}^{N}[Y_n - (\psi_0 + \sum_{k=1}^K\psi_k x_{kn})][A_n-\pi(h_n)] \\
+U_2(\psi;A_n,H_n) &= \sum_{n=1}^{N}[Y_n - (\psi_0 + \sum_{k=1}^K\psi_k x_{kn})][A_n-\pi(h_n)] h_{1n} \\
  \dots \\
-U_K(\psi;A_n,H_n) &= \sum_{n=1}^{N}[Y_n - (\psi_0 + \sum_{k=1}^K\psi_k x_{kn})][A_n-E(A_n|H_n)] h_{Kn} \\
+U_K(\psi;A_n,H_n) &= \sum_{n=1}^{N}[Y_n - (\psi_0 + \sum_{k=1}^K\psi_k x_{kn})][A_n-\pi(h_n)] h_{Kn} \\
 \end{align}
 $$
-In order to write the above estimating equations in matrix/vector form let $\textbf{H}$ be our $n \times (K+1)$ effect modifier/confounder design matrix, $\textbf{A} = \text{diag}(A_1,A_2,\dots,A_N)$ and $\textbf{W} = \text{diag}(A_1-E[A_1|H_1],\dots,A_N-E[A_N|H_N])$. Then our $K+1$ estimating equations in matrix/vector form are $\textbf{U}(\psi;A_n,H_n) = \textbf{H}^t\textbf{W}(\textbf{y}-\textbf{A}\textbf{H}\boldsymbol{\psi})$. Solving for $\boldsymbol{\psi}$ gives
+In order to write the above estimating equations in matrix/vector form let $\textbf{H}$ be our $n \times (K+1)$ effect modifier/confounder design matrix, $\textbf{A} = \text{diag}(A_1,A_2,\dots,A_N)$ and $\textbf{W} = \text{diag}(A_1-\pi(h_1),\dots,A_N-\pi(h_N))$. Then our $K+1$ estimating equations in matrix/vector form are $\textbf{U}(\psi;A_n,H_n) = \textbf{H}^t\textbf{W}(\textbf{y}-\textbf{A}\textbf{H}\boldsymbol{\psi})$. Solving for $\boldsymbol{\psi}$ gives
 
 $$
 \begin{align}
@@ -237,7 +230,15 @@ $$
 \end{align}
 $$
 
-Simulating this situation, again building the settings off Chakraborty and Moodie (2013) [@chakraborty2013statistical], we have two settings, with the $m_0$ component (3) alternatively linear and non-linear. The treatment effect component $\tau(h)$ is always linear - we'll come to non-linar $\tau(h)$ next. We compare G-estimation of the SNMM with a (linear) outcome model for the full expectation $E(Y|H,A)$. While this shows the strength of SNMM in avoiding misspecification it is not entirely fair, as in an empirical setting a simple plot of the data would reveal that a linear model is a bad idea.
+Simulating this situation, again building the settings off Chakraborty and Moodie (2013) [@chakraborty2013statistical], we have two settings, with the $m_0$ component (3) alternatively linear and non-linear. The treatment effect component $\tau(h)$ is always linear - we'll come to non-linar $\tau(h)$ next. 
+
+$$
+\underline{\text{Simulation 2 settings}} \\
+\text{linear case:}\hspace{5 mm}E(Y(a)|H_1=h_1,A=a) = -1.4 + 0.8h_1 + \psi_0 a + \psi_1 a  h_1 + \epsilon \\
+\text{nonlinear case:}\hspace{4 mm}E(Y(a)|H_1=h_1,A=a) = -1.4h_1^3 + e^{h_1} + \psi_0 a + \psi_1 a  h_1 + \epsilon \\
+\text{(all other setting as simulation 1)}
+$$
+We compare G-estimation of the SNMM with a (linear) outcome model for the full expectation $E(Y|H,A)$. While this shows the strength of SNMM in avoiding misspecification it is not entirely fair, as in an empirical setting a simple plot of the data would reveal that a linear model is a bad idea.
 
 ```{r echo=TRUE}
 gest_snmm <- function(X,y,a,ph) {
@@ -256,22 +257,22 @@ M <- 500  # number of runs
 tauM <- replicate(M, {
   # generate data for linear and non-linear cases
   N <- 100
-  x <- runif(N,-0.5,3)
-  ps <- function(x) 1/(1 + exp(2 - 1.8*x))
-  a <- 1*(ps(x) < runif(N))
+  h1 <- runif(N,-0.5,3)
+  ps <- function(x) 1/(1 + exp(2 - 1.8*h1))
+  a <- 1*(ps(h1) < runif(N))
   psi0 <- 2.5
   psi1 <- 1.5
-  y1 <- -1.4 + 0.8*x + psi0*a + psi1*a*x + rnorm(N)
-  y2 <- -1.4*x^3 + exp(x) + psi0*a + psi1*a*x + rnorm(N)
+  y1 <- -1.4 + 0.8*h1 + psi0*a + psi1*a*h1 + rnorm(N)
+  y2 <- -1.4*h1^3 + exp(h1) + psi0*a + psi1*a*h1 + rnorm(N)
   # estimate probability of treatment
-  pm <- glm(a ~ x,family = binomial())
-  X <- cbind(rep(1,N),x)
+  pm <- glm(a ~ h1,family = binomial())
+  H <- cbind(rep(1,N),h1)
   ph <- fitted(pm)
   # estimate treatment effect
-  g1 <- as.vector(gest_snmm(X,y1,a,ph))
-  g2 <- as.vector(gest_snmm(X,y2,a,ph))
-  ols1 <- lm(y1 ~ x + a + x*a)$coef[c("a","x:a")]
-  ols2 <- lm(y2 ~ x + a + x*a)$coef[c("a","x:a")]
+  g1 <- as.vector(gest_snmm(H,y1,a,ph))
+  g2 <- as.vector(gest_snmm(H,y2,a,ph))
+  ols1 <- lm(y1 ~ h1 + a + h1*a)$coef[c("a","h1:a")]
+  ols2 <- lm(y2 ~ h1 + a + h1*a)$coef[c("a","h1:a")]
   c(g1,g2,ols1,ols2)
 })
 ```
@@ -348,9 +349,9 @@ tau_df %>%
 
 # More efficient G-estimation
 
-Returning to the idea that setting $U(\psi) = 0$ follows from $\text{Cov}(Y(0),S(A,H)|H) = 0$, it turns out there is a more efficient form of g-estimation if we take full advantage of this idea. Efficient means.... 
+Returning to the idea that setting $U(\psi) = 0$ follows from $\text{Cov}(Y(0),S(A,H)|H) = 0$, it turns out there is a more efficient form of G-estimation if we take full advantage of this equality. As per [Wikipedia](https://en.wikipedia.org/wiki/Efficiency_(statistics)) "a more efficient estimator needs fewer observations than a less efficient one to achieve a given performance".
 
-Above we use an emprical version of $E(Y(0)(A-S(A|H))|H)=0$ as out estimating equation. That is because we don't know $E(Y(0)|H)$. However, we can estimate it; to do this fit a model and use it to predict $\hat{m}_0(h) = E(Y(0)|H)$ for all observations. Then rather than using $y$ in our estimation procedures we use $\tilde{y} = y-\hat{m}_0(h)$.  The need to estimate several models before G-estimation may seem to add the number of possible sources of error however it actually has the opposite impact. This approach is doubly robust, meaning that if either x or y are correctly specified then the estimated causal effect is unbiased. Correct specification refers to the function form of the model, e.g. aspects such as linear/non-linear effects and interactions. Failure to include confounders would lead to bias even if the model was "correct" for the measured confounders. For our linear model, with m being, the doubly robust estimate is
+Above we use an empirical version of $E(Y(0)(A-S(A|H))|H)=0$ as out estimating equation. That is because we don't know $E(Y(0)|H)$. However, we can estimate it; to do this fit a model and use it to predict $\hat{m}_0(h) = E(Y(0)|H)$ for all observations. Then rather than using $y$ in our estimation procedures we use $\tilde{y} = y-\hat{m}_0(h)$.  The need to estimate several models before G-estimation may seem to add the number of possible sources of error however it actually has the opposite impact. This approach is doubly robust, meaning that if either x or y are correctly specified then the estimated causal effect is unbiased. Correct specification refers to the function form of the model, e.g. aspects such as linear/non-linear effects and interactions. Failure to include confounders would lead to bias even if the model was "correct" for the measured confounders. For our linear model, with m being, the doubly robust estimate is
 
 $$
 \begin{align}
@@ -358,11 +359,11 @@ $$
 \end{align}
 $$
 
-What is the intuition behind this? We can think of it as information simplification - by taking out $m_0(h)$ we are allowing the estimation to focus on changes with $H$ for $A=0$ is informative about what variation is not due to the treatment effect. Generally noise reduction $\rightarrow$ signal enhancement. For a more detailed argument see Athey and Imbens [@athey2019generalized] or Nie and Wager [@nie2017quasi]. We can still use our avoid function `gest_snmm` for efficient g-estimation, but rather than passing in the actual y we pass in $\tilde{y} = y - E(Y|A=0,H=h)$ which we can estimate using an approach of choice.
+What is the intuition behind this? We can think of it as information simplification - by taking out $m_0(h)$ we are allowing the estimation to focus on changes with $H$ for $A=0$ is informative about what variation is not due to the treatment effect. Generally noise reduction $\rightarrow$ signal enhancement. For a more detailed argument see Athey and Imbens [@athey2019generalized] or Nie and Wager [@nie2017quasi]. We can still use our avoid function `gest_snmm` for efficient G-estimation, but rather than passing in the actual y we pass in $\tilde{y} = y - E(Y|A=0,H=h)$ which we can estimate using an approach of choice.
 
 # Non-linear effect modification
 
-So far we have talked about and simulated linear $\tau(h)$, but what if the effect modification is non-linear? Restricting ourselves to linear models in the age of machine learning seems so uncool. I'll add that many of the ideas underlying g-estimation and snmm come up in gradient trees (Athey @athey2019generalized) or R-learning (Nie & Wager @nie2017quasi). As a first step towards non-linear models for $\tau$ we'll consider approaches that involve transformations of the design matrix $H$ (the matrix containing our effect modifiers and generally a vector of 1s for the main (first order) effect of treatment). So we have a transformation $\Phi: \mathbb{R}^{n \times p} \to \mathbb{R}^{n \times q}$, including methods such as the Fourier transform, polynomial expanstions, spline basis matrices. We then replace $X$ with $\Phi(H)$ in our estimation procedure
+So far we have talked about and simulated linear $\tau(h)$, but what if the effect modification is non-linear? Restricting ourselves to linear models in the age of machine learning seems so uncool. I'll add that many of the ideas underlying G-estimation and snmm come up in gradient trees (Athey @athey2019generalized) or R-learning (Nie & Wager @nie2017quasi). As a first step towards non-linear models for $\tau$ we'll consider approaches that involve transformations of the design matrix $H$ (the matrix containing our effect modifiers and generally a vector of 1s for the main (first order) effect of treatment). So we have a transformation $\Phi: \mathbb{R}^{n \times p} \to \mathbb{R}^{n \times q}$, including methods such as the Fourier transform, polynomial expanstions, spline basis matrices. We then replace $X$ with $\Phi(H)$ in our estimation procedure
 
 $$
 \begin{align}
@@ -370,9 +371,20 @@ $$
 \end{align}
 $$
 
-To illustrate this, lets do another simulation. In this case $\tau$ is non-linear. We have increased the number of variables to two (clearly the simulations should not be relied upon).
+To illustrate this, lets do another simulation. In this case $\tau$ is non-linear.
 
-For this simulation I've increased the sample size to $N=1000$.
+$$
+\underline{\text{Simulation 3 settings}} \\
+tau(h_1,h_2) = \psi_0 + 0.7 e^{h1} + 0.5h_2 + 0.4 h_2^2 + \epsilon_1 \\
+E(Y(a)|H=h,A=a) = 1.2h_2 - 1.4h_2^2 + 0.8e^{h_1} + a\tau(h) + 3\epsilon_2 \\
+\psi_0 = 2.5 \\
+\psi_1 = 1.5 \\
+H_1 \sim \text{Uniform}(-0.5,3) \\
+H_2 \sim \text{Normal}(2,3) \\
+\epsilon_1,\epsilon_2 \sim N(0,1) \\
+P(A=1|H=h) = (1 + \text{exp}(2 - 1.8h_1 + 0.2h_2)^{-1}\\
+$$
+We have increased the number of variables to two (clearly the simulations should not be relied upon!). For this simulation I've increased the sample size to $N=1000$.
 
 ```{r echo=TRUE}
 ## SIMULATION 3
@@ -439,11 +451,11 @@ ggplot(mse_df) +
 
 # Standard errors and confidence intervals
 
-Quantifying uncertainty in our parameter estimates is important. For g-estimation of SNMMs the non-parametric bootstrap offers a general approach to estimation of standard errors, allowing incorporation of the uncertainty arising from estimating $\pi(h)$ and $m_0(h)$.
+Quantifying uncertainty in our parameter estimates is important. For G-estimation of SNMMs the non-parametric bootstrap offers a general approach to estimation of standard errors, allowing incorporation of the uncertainty arising from estimating $\pi(h)$ and $m_0(h)$.
 
 # Conclusion and up-next
 
-We've outlined the linear SNMM and G-estimation, focusing on the single stage setting. While SNMM are not often used in practise [@vansteelandt2014structural] I hope that as we go through this series their strengths will become clear. We have largely dealt with simplistic situations in which the CATE is of interest to emphasise the fundamentals of the method. G-estimation is based on setting an empirical covariance equal to zero building off the assumptions from causal inference - ignorability/unconfoundedess, consistency and positivity. As mentioned at the beginning there is much more to causal inference than the methods and often subject matter knowledge plays an important role in justifying the reasonableness of these assumptions and designing the dat collection/extraction process.
+We've outlined the linear SNMM and G-estimation, focusing on the single stage setting. While SNMM are not often used in practise [@vansteelandt2014structural] I hope that as we go through this series their strengths will become clear. We have largely dealt with simplistic situations in which the CATE is of interest to emphasise the fundamentals of the method. G-estimation is based on setting an empirical covariance equal to zero building off the assumptions from causal inference - ignorability/unconfoundedess, consistency and positivity. As mentioned at the beginning there is much more to causal inference than the methods and often subject matter knowledge plays an important role in justifying the reasonableness of these assumptions and designing the data collection/extraction process.
 
 There are several things we haven't covered in this tour of SNMM and G-estimation:
 
@@ -454,4 +466,4 @@ There are several things we haven't covered in this tour of SNMM and G-estimatio
 
 We'll come back to these topics, in particular time varying treatments in subsequent posts. Thanks for reading.
 
-
+**Thanks** to Oscar Perez Concha for reading drafts of this.

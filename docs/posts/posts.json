@@ -2,16 +2,16 @@
   {
     "path": "posts/2020-05-12-structural-nested-mean-models-and-g-estimation/",
     "title": "Structural Nested Mean Models and G-Estimation: Part I",
-    "description": "An introduction to structural nested mean models for causal inference",
+    "description": "Structural nested mean models are an important method for causal inference in settings with time-varyings treatments.\nThey model the difference between two treatment regimes and naturally incorporate effect modification, making them a \nuseful option in studies investigating personalised approaches to medical treatment.\nIn this post, we'll introduce the basics of structural nested mean models, and the associated method of G-estimation \nin a single decision setting.",
     "author": [
       {
-        "name": "Oisin Fitzgerald",
+        "name": "Oisín Fitzgerald",
         "url": {}
       }
     ],
-    "date": "2020-06-22",
+    "date": "2020-07-16",
     "categories": [],
     "preview": "posts/2020-05-12-structural-nested-mean-models-and-g-estimation/confounding_v2.png",
-    "last_modified": "2020-06-22T10:33:12+10:00"
+    "last_modified": "2020-07-16T11:42:00+10:00"
   }
 ]
